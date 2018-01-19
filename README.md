@@ -1,2 +1,3 @@
-Työn aihe: Ukkonen's Suffiz tree construction algorithm
+##Työn aihe:
+Ukkonen's Suffiz tree construction algorithm
 
