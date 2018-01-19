@@ -1,15 +1,16 @@
-##Määrittelydokumentti
+## Määrittelydokumentti
 
 Toteutan suffiksipuun luominen merkkijonolle Ukkosen algoritmilla, ja sen jälkeen erilaisten hakutoimintojen toteuttaminen suffiksipuusta.
 
 Ongelmana on suffiksipuun luominen tehokkaasti. Ukkosen algoritmilla tämä onnistuu myös onlinenä, eli ylläpitämällä koko ajan jo luetun merkkijonon suffiksipuuta samalla kun merkkijonoa luetaan merkki kerrallaan (vasemmalta oikealle).
 
 Ohjelma saa syötteenä merkkijonon, jolle luodaan puu.
-Sen jälkeen ohjelma voi tehdä hakuja puuhun.
+Sen jälkeen ohjelma voi tehdä hakuja puuhun: testata onko m-pituinen merkkijono alkuperäisen merkkijonon osajono O(m) ajassa.
 
-Tavoitteena on puun luominen O(n) ajassa O(n) tilavaatimuksella.
+Tavoitteena on puun luominen n-pituiselle merkkijonolle O(n) ajassa O(n) tilavaatimuksella.
 
-###Lähteet:
+
+### Lähteet:
 [On-line construction of suffix trees, Esko Ukkonen, 1995](https://www.cs.helsinki.fi/u/ukkonen/SuffixT1withFigs.pdf)
 
 [Suffix tree, wikipedia](https://en.wikipedia.org/wiki/Suffix_tree)
