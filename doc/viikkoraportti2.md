@@ -6,4 +6,8 @@ Aloitin ohjelman tekemisen. UkkonenTree-luokan header on tiedostossa [include/us
 
 Scriptien kääntämät ohjelmat ovat kansiossa [bin](https://github.com/Hansuzu/tlab/tree/master/bin/)
 
-Aloitin algoritmin ytimen toteuttamisen.
+Aloitin algoritmin toteuttamisen. Edistyin melko pitkälle.
+
+Seuraavaksi jatkan algoritmin tekemistä.
+
+Arvio käytetystä ajasta: 7h.
