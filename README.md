@@ -7,3 +7,6 @@ Ukkonen's Suffix tree construction algorithm.
 [Määrittelydokumentti](https://github.com/Hansuzu/tlab/tree/master/doc/maarittelydokumentti.md)
 
 [Viikkoraportti1](https://github.com/Hansuzu/tlab/tree/master/doc/viikkoraportti1.md)
+[Viikkoraportti2](https://github.com/Hansuzu/tlab/tree/master/doc/viikkoraportti2.md)
+
+
