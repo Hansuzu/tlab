@@ -13,8 +13,8 @@ Ukkonen's Suffix tree construction algorithm.
 
 [Viikkoraportti1](https://github.com/Hansuzu/tlab/tree/master/doc/viikkoraportti1.md)
 [Viikkoraportti2](https://github.com/Hansuzu/tlab/tree/master/doc/viikkoraportti2.md)
-~~[Viikkoraportti3](https://github.com/Hansuzu/tlab/tree/master/doc/viikkoraportti3.md)~~
-[Viikkoraportti4](https://github.com/Hansuzu/tlab/tree/master/doc/viikkoraportti4.md)
+~~[Viikkoraportti3](https://github.com/Hansuzu/tlab/tree/master/doc/viikkoraportti3.md)~~ (viikon 3 asiat jäivät tekemättä)
+[Viikkoraportti4](https://github.com/Hansuzu/tlab/tree/master/doc/viikkoraportti4.md) 
 
 
 
