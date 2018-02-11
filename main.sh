@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "Compiling..."
-g++ src/main.cpp src/usuffix.cpp -std=c++17 -O3 -Wall -o bin/main -Iinclude
+g++ src/usuffix.cpp src/main.cpp -std=c++17 -O3 -march=native -Wall -o bin/main -Iinclude
 
 RET=$?;
 if [ $RET == 0 ] 

@@ -1,4 +1,4 @@
-## Viikkoraportti 1
+## Viikkoraportti 2
 
 Päätin toteuttaa ohjelman testauksen [cxx](http://cxxtest.com/):ää käyttäen. Yksikkötestit ovat tiedostossa [test/unit_tests.h](https://github.com/Hansuzu/tlab/tree/master/test/unit_tests.h). Tein skriptin [rtest.sh](https://github.com/Hansuzu/tlab/tree/master/rtest.sh), joka compilaa ja ajaa yksikkötestit.
 

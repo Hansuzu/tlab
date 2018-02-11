@@ -22,7 +22,7 @@ template<int sizeOfAlphabet>
 void UkkonenTree<sizeOfAlphabet>::addEdge(Node* parent, Edge* edge){
     //add edge to the parent
     //if l<0, the index character is r, otherwise str[l]
-    parent->children[edge->l<0?edge->r:str[edge->l]]=edge;
+    parent->children[edge->l < 0  ?  edge->r : str[edge->l]]=edge;
 }
 
 template<int sizeOfAlphabet>
@@ -47,7 +47,7 @@ typename UkkonenTree<sizeOfAlphabet>::Node* UkkonenTree<sizeOfAlphabet>::addChil
 }
 
 template<int sizeOfAlphabet>
-void UkkonenTree<sizeOfAlphabet>::setSuffixlink(Node* from, Node* to){
+void UkkonenTree<sizeOfAlphabet>::setSuffixlink(Node* from, Node* to) {
     from->suffixlink=to;
 }
 
@@ -56,47 +56,49 @@ void UkkonenTree<sizeOfAlphabet>::setSuffixlink(Node* from, Node* to){
 
 //Ukkonen, page 12
 template<int sizeOfAlphabet>
-typename UkkonenTree<sizeOfAlphabet>::Reference UkkonenTree<sizeOfAlphabet>::update(Reference ref){
-    //follow boundary route from ref
-    int i=ref.second;
-    ref.r=i-1;
+typename UkkonenTree<sizeOfAlphabet>::Reference UkkonenTree<sizeOfAlphabet>::update(Reference ref) {
+    //follow boundary route from ref to end point
+    int i=ref.r+1; //reference is to the state before the new character, i is the index of the new character
     Node* oldr=NULL;
     std::pair<bool, Node*> endr=testAndSplit(ref, str[i]);
     while (!endr.first){ //While not an end point of the boundary route
-        addChild(endr.second, i, -1); //add new node
-        //add suffix link from previously created new node (if any) to this new new node
+
+        //this state is not an end-point => new leaf needs to bee added
+        addChild(endr.second, i, -1); //add new state node
+        
+        //add suffix link from previous node (if there is one) to this new new node
         if (oldr) setSuffixlink(oldr, endr.second); 
         oldr=endr.second;
         //follow the suffixlink of the current node in reference and canonize
-        ref=canonize(Reference(ref.s->suffixlink, ref.l, ref.r));
+        ref.s=ref.s->suffixlink;
+        ref=canonize(ref);
         
         endr=testAndSplit(ref, str[i]);
     }
-    if (oldr)   setSuffixlink(oldr, ref.s);
-    return ref;
+    if (oldr) setSuffixlink(oldr, ref.s);
+    return ref; // return end-point, it will be used to calculate new active point (Ukkonen, page 13)
 }
 
 //Ukkonen, page 12
 template<int sizeOfAlphabet>
-std::pair<bool, typename UkkonenTree<sizeOfAlphabet>::Node*> UkkonenTree<sizeOfAlphabet>::testAndSplit(Reference ref, int chr){
-    if (ref.r<=ref.r){ //referenced state not explicit
-        if (str[ref.r+1]==chr){ //route exists.
-            return std::make_pair(true, ref);
-        }else{ //route does not exist, splitting needed
-            Edge* pEdge=ref.s->children[ref.l];
-            Node* newNode=addChild(ref.s, ref.l, ref.r);
-            addEdge(newNode, pEdge);
-            pEdge->l=ref.r+1;
-            ref.s=newNode;
-            //TODO TODO TODO TODO
-            //TODO TODO TODO TODO
-            return std::make_pair(false, ref);
+std::pair<bool, typename UkkonenTree<sizeOfAlphabet>::Node*> UkkonenTree<sizeOfAlphabet>::testAndSplit(Reference ref, int chr) {
+    if (ref.l<=ref.r){ //referenced state not explicit
+        int i=ref.s->children[str[ref.l]]->l + (ref.r-ref.l);//i=index corresponding to ref.r in edges l-r range 
+                                                             //(edges l is not necessarily same as ref.l)
+        if (str[i+1]==chr){ //transition already exists, state is an end-state => return true
+            return std::make_pair(true, ref.s);
+        }else{ //transition does not exist, splitting needed
+            Edge* pEdge=ref.s->children[str[ref.l]]; //Get pointer of original edge
+            Node* newNode=addChild(ref.s, ref.l, ref.r);  //Add new node, replaces the original edge
+            pEdge->l+=(ref.r-ref.l+1); //fix left boundary of original edge (must be done before addEdge)
+            addEdge(newNode, pEdge); //Add original edge to newly created node
+            return std::make_pair(false, newNode);
         }
     }else{ //referenced state explicit, no splitting needed
-        if (ref.s->children[chr]==NULL){ //route does not exists
-            return std::make_pair(false, ref);
-        }else{//route exists
-            return std::make_pair(true, ref);
+        if (ref.s->children[chr]==NULL){ //transition does not exist, return false
+            return std::make_pair(false, ref.s);
+        }else{ //transition exists, return true
+            return std::make_pair(true, ref.s);
         }
     }
 }
@@ -104,7 +106,21 @@ std::pair<bool, typename UkkonenTree<sizeOfAlphabet>::Node*> UkkonenTree<sizeOfA
 //Ukkonen page 13
 template<int sizeOfAlphabet>
 typename UkkonenTree<sizeOfAlphabet>::Reference UkkonenTree<sizeOfAlphabet>::canonize(Reference ref){
-    
+    if (ref.r<ref.l){ //Explicit, already canonized
+        return ref;
+    }else{
+        Edge* edge=ref.s->children[str[ref.l]]; //Get correct transition from ref.s
+        while (edge->l<0  || (edge->r - edge->l <= ref.r - ref.l  && edge->r!=-1)) { //While not canonized = while edge from ref.s is too short
+                                                                                     //if edge is from aux (edge->l<0) it can be proved to always be too short (but comparison would not work)
+             // go to next node and update ref.l
+            ref.s=edge->targetNode;
+            if (edge->l<0) ref.l+=1; //edge is from aux
+            else           ref.l+=edge->r - edge->l +1; 
+            if (ref.r<ref.l) break; //reference to explicit node
+            edge=ref.s->children[str[ref.l]];
+        }
+        return ref;
+    }
 }
 
 
@@ -115,20 +131,79 @@ typename UkkonenTree<sizeOfAlphabet>::Reference UkkonenTree<sizeOfAlphabet>::can
 template<int sizeOfAlphabet>
 void UkkonenTree<sizeOfAlphabet>::push(int chr){
     str.push_back(chr);
+    activePoint=update(activePoint);
+    activePoint.r+=1; //new active point
+    activePoint=canonize(activePoint);
+    
 }
 template<int sizeOfAlphabet>
-void UkkonenTree<sizeOfAlphabet>::push(std::vector<int>& str){
-    for (int i=0; i<str.size(); ++i){
-        push(str[i]);
+void UkkonenTree<sizeOfAlphabet>::push(std::vector<int>& str, int delta){
+    for (int i=0; i<(int)str.size(); ++i){
+        push(str[i]+delta);
     }
 }
 
 template<int sizeOfAlphabet>
-void UkkonenTree<sizeOfAlphabet>::push(std::string str){
-    
+void UkkonenTree<sizeOfAlphabet>::push(std::string& str, int delta){
     std::vector<int> data(str.begin(), str.end());
-    push(data);
+    push(data, delta);
 }
 
+template<int sizeOfAlphabet>
+bool UkkonenTree<sizeOfAlphabet>::isSubstring(std::vector<int>& str, int delta){
+    Reference state(root, 0, 1);
+    for (int i=0; i<(int)str.size(); ++i){
+        
+    }
+    return 0;
+}
+
+template<int sizeOfAlphabet>
+bool UkkonenTree<sizeOfAlphabet>::isSubstring(std::string& str, int delta){
+    std::vector<int> data(str.begin(), str.end());
+    return isSubstring(data, delta);
+}
+
+
+
+
+
+
+//For drawing
+template<int sizeOfAlphabet>
+std::string UkkonenTree<sizeOfAlphabet>::dotFormatDFS(Node* node, std::map<Node*, std::string>& names, int delta){
+    if (!names.count(node)) names[node]=std::to_string(names.size()-2);
+    std::string ans="";
+    for (int i=0; i<sizeOfAlphabet; ++i) {
+        if (node->children[i]){
+            Node* target=node->children[i]->targetNode;
+            int l=node->children[i]->l;
+            int r=node->children[i]->r;
+            std::string label="";
+            for (int i=l; i<=(r==-1?(int)str.size()-1:r); ++i) label.push_back(str[i]+delta);
+            if (r==-1)label+="...";
+            ans+=dotFormatDFS(target, names, delta);
+            ans+="\t"+names[node]+" -> "+names[target]+" [label=\""+label+"\"];\n";
+        }
+    }
+    if (!names.count(node->suffixlink)) names[node->suffixlink]=std::to_string(names.size()-2);
+    if (node->suffixlink){
+        ans+="\t"+names[node]+" -> "+names[node->suffixlink]+" [style=dashed arrowhead=halfopen];\n";
+    }
+    return ans;
+}
+
+
+template<int sizeOfAlphabet>
+std::string UkkonenTree<sizeOfAlphabet>::getDotFormat(int delta){
+    std::string result="digraph{\n\taux;\n\troot=aux;\n";
+    names[&aux]="aux";
+    names[&root]="root";
+    result+=dotFormatDFS(&root, names, delta);
+
+    result+="\t"+names[activePoint.s]+" [label=\""+names[activePoint.s]+"* ("+std::to_string(activePoint.l)+", "+std::to_string(activePoint.r)+")\"];\n";
+    result+="\t"+names[&aux]+" -> "+names[&root]+";\n}";
+    return result;
+}
 
 
