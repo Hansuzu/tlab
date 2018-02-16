@@ -116,6 +116,4 @@ public:
             TS_ASSERT_EQUALS(u_tree.aux.children[i]->targetNode, &(u_tree.root));
         }
     }
-    
-
 };

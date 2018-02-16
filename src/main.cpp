@@ -24,5 +24,5 @@ int main(){
     string s;
     cin >> s;
     eppapuu.push(s, -'a');
-    cout << eppapuu.getDotFormat('a') << std::endl;
+   // cout << eppapuu.getDotFormat('a') << std::endl;
 }

@@ -8,6 +8,6 @@ def rm():
     return m[random.randint(0, len(m)-1)]
 
 s=""
-for i in range(int(2e6)):
+for i in range(int(16e6)):
     s+=rm()
 print s
