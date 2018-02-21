@@ -1,3 +1,5 @@
+//OLD IMPLEMENTATION
+
 //usuffix.cpp file in include folder, because template-class-stuff.
 
 #include <bits/stdc++.h> //include everything from standard library (will be later replaced with something all removed...)
@@ -138,15 +140,15 @@ void UkkonenTree<sizeOfAlphabet>::push(int chr){
     
 }
 template<int sizeOfAlphabet>
-void UkkonenTree<sizeOfAlphabet>::push(std::vector<int>& str, int delta){
-    for (int i=0; i<(int)str.size(); ++i){
-        push(str[i]+delta);
+void UkkonenTree<sizeOfAlphabet>::push(std::vector<int>& astr, int delta){
+    for (int i=0; i<(int)astr.size(); ++i){
+        push(astr[i]+delta);
     }
 }
 
 template<int sizeOfAlphabet>
-void UkkonenTree<sizeOfAlphabet>::push(std::string& str, int delta){
-    std::vector<int> data(str.begin(), str.end());
+void UkkonenTree<sizeOfAlphabet>::push(std::string& astr, int delta){
+    std::vector<int> data(astr.begin(), astr.end());
     push(data, delta);
 }
 
@@ -175,18 +177,18 @@ typename UkkonenTree<sizeOfAlphabet>::Reference UkkonenTree<sizeOfAlphabet>::get
 
 
 template<int sizeOfAlphabet>
-bool UkkonenTree<sizeOfAlphabet>::isSubstring(std::vector<int>& str, int delta){
+bool UkkonenTree<sizeOfAlphabet>::isSubstring(std::vector<int>& astr, int delta){
     Reference state(&root, 1, 0);
-    for (int i=0; i<(int)str.size(); ++i){
-        state=getChild(state, str[i]+delta);
+    for (int i=0; i<(int)astr.size(); ++i){
+        state=getChild(state, astr[i]+delta);
         if (state.s==NULL) return 0;
     }
     return 1;
 }
 
 template<int sizeOfAlphabet>
-bool UkkonenTree<sizeOfAlphabet>::isSubstring(std::string& str, int delta){
-    std::vector<int> data(str.begin(), str.end());
+bool UkkonenTree<sizeOfAlphabet>::isSubstring(std::string& astr, int delta){
+    std::vector<int> data(astr.begin(), astr.end());
     return isSubstring(data, delta);
 }
 
@@ -206,7 +208,7 @@ std::string UkkonenTree<sizeOfAlphabet>::dotFormatDFS(Node* node, std::map<Node*
             int l=node->children[i]->l;
             int r=node->children[i]->r;
             std::string label="";
-            for (int i=l; i<=(r==-1?(int)str.size()-1:r); ++i) label.push_back(str[i]+delta);
+            for (int j=l; j<=(r==-1?(int)str.size()-1:r); ++j) label.push_back(str[j]+delta);
             if (r==-1)label+="...";
             ans+=dotFormatDFS(target, names, delta);
             ans+="\t"+names[node]+" -> "+names[target]+" [label=\""+label+"\"];\n";
@@ -223,12 +225,12 @@ std::string UkkonenTree<sizeOfAlphabet>::dotFormatDFS(Node* node, std::map<Node*
 template<int sizeOfAlphabet>
 std::string UkkonenTree<sizeOfAlphabet>::getDotFormat(int delta){
     std::string result="digraph{\n\taux;\n\troot=aux;\n";
-    names[&aux]="aux";
-    names[&root]="root";
-    result+=dotFormatDFS(&root, names, delta);
+    dnames[&aux]="aux";
+    dnames[&root]="root";
+    result+=dotFormatDFS(&root, dnames, delta);
 
-    result+="\t"+names[activePoint.s]+" [label=\""+names[activePoint.s]+"* ("+std::to_string(activePoint.l)+", "+std::to_string(activePoint.r)+")\"];\n";
-    result+="\t"+names[&aux]+" -> "+names[&root]+";\n}";
+    result+="\t"+dnames[activePoint.s]+" [label=\""+dnames[activePoint.s]+"* ("+std::to_string(activePoint.l)+", "+std::to_string(activePoint.r)+")\"];\n";
+    result+="\t"+dnames[&aux]+" -> "+dnames[&root]+";\n}";
     return result;
 }
 

@@ -16,5 +16,4 @@ int main(){
         cin >> b;
         cout << isSubstring(s, b) << "\n";
     }
-   // cout << e
 }

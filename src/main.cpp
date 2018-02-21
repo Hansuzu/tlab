@@ -1,34 +1,25 @@
 #include <bits/stdc++.h>
 #include <usuffix.h>
-
+#include <fastset.h>
 using namespace std;
 
-/*
 
-string longestCommonSubString(string& a, string& b){ // Find the longest common substring in O(n) of two strings consisting of alphabet [a-z]
-    UkkonenTree<30> eppapuu;
-    vector<int> t;
-    for (auto c : a) t.push_back(c-'a'+2);
-    t.push_back(1);
-    for (auto c : b) t.push_back(c-'a'+2);
-    t.push_back(0);
-    eppapuu.push(t);
-    
-}*/
-
-
+FastSet<int> fset;
 int main(){
     ios_base::sync_with_stdio(0); cin.tie(0);
-    UkkonenTree<30> eppapuu;
-    string s;
-    cin >> s;
-    eppapuu.push(s, -'a');
-    int T;
-    cin >> T;
-    for (int i=0; i<T; ++i){
-        string b;
-        cin >> b;
-        cout << eppapuu.isSubstring(b, -'a') << "\n";
+
+    FastSet<UkkonenTree::Edge> fset2;
+    UkkonenTree::Edge edge1(NULL, 0, 0); edge1.firstCharacter=5;
+    UkkonenTree::Edge edge2(NULL, 0, 0); edge2.firstCharacter=9;
+    UkkonenTree::Edge edge3(NULL, 0, 0); edge3.firstCharacter=2;
+    fset2.insert(edge1);
+    fset2.insert(edge2);
+    fset2.insert(edge3);
+    for (int i=0; i<10; ++i){
+        UkkonenTree::Edge fedge(NULL, 0, 0); fedge.firstCharacter=i;
+        int id=fset2.findIndex(fedge);
+        cout << i << ": " << id;
+        if (id>=0) cout << ", " << fset2.findByIndex(id).firstCharacter;
+        cout << endl;
     }
-   // cout << eppapuu.getDotFormat('a') << std::endl;
 }

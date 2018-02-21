@@ -6,22 +6,16 @@
 class Tests : public CxxTest::TestSuite {
 public:
      //Init UkkonenTree of a certain alphabetSize and test if the pointers of root Node are initialized to NULL
-    void testConstruction1() {
-        const int alphabetSize=15;
-        UkkonenTree<alphabetSize> u_tree;
-        for (int i=0; i<alphabetSize; ++i) TS_ASSERT_EQUALS(u_tree.root.children[i], nullptr);
-        TS_ASSERT_EQUALS(u_tree.aux.suffixlink, nullptr);
-    }
+
     void testConstruction2() {
-        const int alphabetSize=155000;
-        UkkonenTree<alphabetSize> u_tree;
-        for (int i=0; i<alphabetSize; ++i) TS_ASSERT_EQUALS(u_tree.root.children[i], nullptr);
+        UkkonenTree u_tree;
+        TS_ASSERT_EQUALS(u_tree.root.children.size(), 0);
         TS_ASSERT_EQUALS(u_tree.aux.suffixlink, nullptr);
     }
     void testConstruction3() {
         const int alphabetSize=1;
         UkkonenTree<alphabetSize> u_tree;
-        for (int i=0; i<alphabetSize; ++i) TS_ASSERT_EQUALS(u_tree.root.children[i], nullptr);
+        TS_ASSERT_EQUALS(u_tree.root.children.size(), 0);
         TS_ASSERT_EQUALS(u_tree.aux.suffixlink, nullptr);
     }
     

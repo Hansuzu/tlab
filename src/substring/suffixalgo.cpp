@@ -4,7 +4,7 @@ using namespace std;
 
 int main(){
     ios_base::sync_with_stdio(0); cin.tie(0);
-    UkkonenTree<30> eppapuu;
+    UkkonenTree eppapuu;
     string s;
     cin >> s;
     eppapuu.push(s, -'a');
