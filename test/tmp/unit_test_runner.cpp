@@ -63,35 +63,35 @@ public:
  void runTest() { suite_Tests.testPushStdString(); }
 } testDescription_suite_Tests_testPushStdString;
 
+static class TestDescription_suite_Tests_testAux : public CxxTest::RealTestDescription {
+public:
+ TestDescription_suite_Tests_testAux() : CxxTest::RealTestDescription( Tests_Tests, suiteDescription_Tests, 69, "testAux" ) {}
+ void runTest() { suite_Tests.testAux(); }
+} testDescription_suite_Tests_testAux;
+
 static class TestDescription_suite_Tests_testAddChild1 : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_Tests_testAddChild1() : CxxTest::RealTestDescription( Tests_Tests, suiteDescription_Tests, 69, "testAddChild1" ) {}
+ TestDescription_suite_Tests_testAddChild1() : CxxTest::RealTestDescription( Tests_Tests, suiteDescription_Tests, 76, "testAddChild1" ) {}
  void runTest() { suite_Tests.testAddChild1(); }
 } testDescription_suite_Tests_testAddChild1;
 
 static class TestDescription_suite_Tests_testAddChild2 : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_Tests_testAddChild2() : CxxTest::RealTestDescription( Tests_Tests, suiteDescription_Tests, 80, "testAddChild2" ) {}
+ TestDescription_suite_Tests_testAddChild2() : CxxTest::RealTestDescription( Tests_Tests, suiteDescription_Tests, 87, "testAddChild2" ) {}
  void runTest() { suite_Tests.testAddChild2(); }
 } testDescription_suite_Tests_testAddChild2;
 
 static class TestDescription_suite_Tests_testAddAsChild1 : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_Tests_testAddAsChild1() : CxxTest::RealTestDescription( Tests_Tests, suiteDescription_Tests, 90, "testAddAsChild1" ) {}
+ TestDescription_suite_Tests_testAddAsChild1() : CxxTest::RealTestDescription( Tests_Tests, suiteDescription_Tests, 97, "testAddAsChild1" ) {}
  void runTest() { suite_Tests.testAddAsChild1(); }
 } testDescription_suite_Tests_testAddAsChild1;
 
 static class TestDescription_suite_Tests_testAddAsChild2 : public CxxTest::RealTestDescription {
 public:
- TestDescription_suite_Tests_testAddAsChild2() : CxxTest::RealTestDescription( Tests_Tests, suiteDescription_Tests, 102, "testAddAsChild2" ) {}
+ TestDescription_suite_Tests_testAddAsChild2() : CxxTest::RealTestDescription( Tests_Tests, suiteDescription_Tests, 109, "testAddAsChild2" ) {}
  void runTest() { suite_Tests.testAddAsChild2(); }
 } testDescription_suite_Tests_testAddAsChild2;
-
-static class TestDescription_suite_Tests_testAux : public CxxTest::RealTestDescription {
-public:
- TestDescription_suite_Tests_testAux() : CxxTest::RealTestDescription( Tests_Tests, suiteDescription_Tests, 113, "testAux" ) {}
- void runTest() { suite_Tests.testAux(); }
-} testDescription_suite_Tests_testAux;
 
 #include <cxxtest/Root.cpp>
 const char* CxxTest::RealWorldDescription::_worldName = "cxxtest";

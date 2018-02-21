@@ -1,5 +1,6 @@
 #include <bits/stdc++.h> //include everything from standard library (will be later replaced with something all removed...)
-
+#ifndef USUFFIX_H
+#define USUFFIX_H
 
 
 //Ukkonen's paper: https://www.cs.helsinki.fi/u/ukkonen/SuffixT1withFigs.pdf
@@ -74,6 +75,9 @@ public:
     void push(std::vector<int>& str, int delta=0); // append a  string represented as std::vector<int> to the tree (adds delta to each integer)
     void push(std::string& str, int delta=0);  //append a string represented as std::string to the tree
     
+    
+    Reference getChild(Reference ref, int c); // If there exist a state ref+c, return canonized reference to it. If fail, returned Reference.s=NULL
+    
     bool isSubstring(std::vector<int>& str, int delta=0);
     bool isSubstring(std::string& str, int delta=0);
     
@@ -91,3 +95,7 @@ public:
     std::string dotFormatDFS(Node* node, std::map<Node*, std::string>& names, int delta=0); // getDotFormat calls this, handles the subtree of node
     std::string getDotFormat(int delta=0); // Returns tree represented in the format used by command line tool dot (which can be used to draw it)
 };
+
+#include "usuffix.cpp" //include usuffix.cpp - because template class functions must be defined when used...
+
+#endif

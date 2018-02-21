@@ -1,6 +1,5 @@
 #include <bits/stdc++.h>
-//#include <usuffix.h>
-#include "usuffix.cpp"
+#include <usuffix.h>
 
 using namespace std;
 
@@ -24,5 +23,12 @@ int main(){
     string s;
     cin >> s;
     eppapuu.push(s, -'a');
+    int T;
+    cin >> T;
+    for (int i=0; i<T; ++i){
+        string b;
+        cin >> b;
+        cout << eppapuu.isSubstring(b, -'a') << "\n";
+    }
    // cout << eppapuu.getDotFormat('a') << std::endl;
 }

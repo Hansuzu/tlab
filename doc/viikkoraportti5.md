@@ -19,4 +19,8 @@ Implementaationi ei vaikuta erityisen nopealta, koska miljoonan kokoisen merkkij
 
 Havaitsin, että on melko vaikeaa tehdä hyvää yksikkötestausta tietyille osille puun muodostamista. Aion osittain siksi lisätä brute-force -testaajan, jolla voin testata nopeasti suurelle määrälle (satunnaisesti generoituja) testejä, ratkaiseeko algoritmin puu tietyn merkkijono-ongelman oikein. (Aion testata tätä ensin yksinkertaisella substring-testauksella)
 
+Lisäksi pitää selvittää, saanko jotenkin helposti testattua tuolla cxx:llä testien coveragea.
+
 [Longest common substring -ongelman](https://en.wikipedia.org/wiki/Longest_common_substring_problem) ratkaiseminen suffiksipuulla näyttäisi melko mielenkiintoiselta. Ajattelin, että ensi viikolla voisin alkaa tekemään tuota.
+
+Käytän tällä hetkellä std-vectoria suffiksipuussa olevan merkkijonon tallentamiseen. Merkkijonon tallentaminen ei ole kovin olennainen osa algoritmia, mutta voisin silti korvata tuon jollain omalla rakenteella.

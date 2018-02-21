@@ -1,7 +1,7 @@
 #include <cxxtest/TestSuite.h>
 
 #include <bits/stdc++.h>
-#include "../src/usuffix.cpp"
+#include <usuffix.h>
 
 class Tests : public CxxTest::TestSuite {
 public:
@@ -10,19 +10,19 @@ public:
         const int alphabetSize=15;
         UkkonenTree<alphabetSize> u_tree;
         for (int i=0; i<alphabetSize; ++i) TS_ASSERT_EQUALS(u_tree.root.children[i], nullptr);
-        TS_ASSERT_EQUALS(u_tree.root.suffixlink, nullptr);
+        TS_ASSERT_EQUALS(u_tree.aux.suffixlink, nullptr);
     }
     void testConstruction2() {
         const int alphabetSize=155000;
         UkkonenTree<alphabetSize> u_tree;
         for (int i=0; i<alphabetSize; ++i) TS_ASSERT_EQUALS(u_tree.root.children[i], nullptr);
-        TS_ASSERT_EQUALS(u_tree.root.suffixlink, nullptr);
+        TS_ASSERT_EQUALS(u_tree.aux.suffixlink, nullptr);
     }
     void testConstruction3() {
         const int alphabetSize=1;
         UkkonenTree<alphabetSize> u_tree;
         for (int i=0; i<alphabetSize; ++i) TS_ASSERT_EQUALS(u_tree.root.children[i], nullptr);
-        TS_ASSERT_EQUALS(u_tree.root.suffixlink, nullptr);
+        TS_ASSERT_EQUALS(u_tree.aux.suffixlink, nullptr);
     }
     
     //Test if pushing functions modify UkkonenTree::str correctly
@@ -66,6 +66,13 @@ public:
     }
     
     
+    void testAux(){
+        UkkonenTree<119> u_tree;
+        for (int i=0; i<119; ++i){
+            TS_ASSERT_EQUALS(u_tree.aux.children[i]->targetNode, &(u_tree.root));
+        }
+    }
+
     void testAddChild1(){
         UkkonenTree<256> u_tree;
         std::string str="abcdefg";
@@ -110,10 +117,6 @@ public:
         }
     }
     
-    void testAux(){
-        UkkonenTree<119> u_tree;
-        for (int i=0; i<119; ++i){
-            TS_ASSERT_EQUALS(u_tree.aux.children[i]->targetNode, &(u_tree.root));
-        }
-    }
+ 
+
 };
