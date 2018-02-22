@@ -1,11 +1,10 @@
-//OLD IMPLEMENTATION
-
+//Implementation using O(m) sized array.
 
 #include <bits/stdc++.h> //include everything from standard library (will be later replaced with something all removed...)
 
 
-#ifndef USUFFIX_OLD_H
-#define USUFFIX_OLD_H
+#ifndef USUFFIX_ARRAY_H
+#define USUFFIX_ARRAY_H
 
 
 //Ukkonen's paper: https://www.cs.helsinki.fi/u/ukkonen/SuffixT1withFigs.pdf
@@ -101,6 +100,6 @@ public:
     std::string getDotFormat(int delta=0); // Returns tree represented in the format used by command line tool dot (which can be used to draw it)
 };
 
-#include "usuffix_old.cpp" //include usuffix.cpp - because template class functions must be defined when used...
+#include "usuffix_array.cpp" //include usuffix.cpp - because template class functions must be defined when used...
 
 #endif

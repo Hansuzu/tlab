@@ -1,35 +1,37 @@
 //usuffix.cpp file in include folder, because template-class-stuff.
 
-#include <bits/stdc++.h> //include everything from standard library (will be later replaced with something all removed...)
+#include <bits/stdc++.h> 
 #include <usuffix.h>
-#include <vector.h>
+#include <fastset.h>
 
 struct UkkonenTree::Node {
-    Vector<Edge> children;      //Sorted vector of child node pointers. Finding an edge O(log m)
-                                                    //Inserting and edge: O(m)
+    FastSet<Edge> children;         //Set of children. Finding an edge O(log m)
+                                                    //Inserting and edge: O(log m)
                                                     //where m=size of alphabet
     Node* suffixlink; //Suffix link pointer
     
-    //constructor and destructor
-    Node(){suffixlink=0;}
+    Node(){
+        Edge t(NULL, 0, 0);
+        t.firstCharacter=(1<<31)-1; //Max integer value;
+        children.set_max_element(t);
+        suffixlink=0;
+    }
     ~Node(){}
 };
 
 
 
+
 int UkkonenTree::findChildIndex(Node* parent, int c){
-    int a=0; int b=parent->children.size()-1;
-    if (b<0) return -1;
-    while (a<=b){
-        int v=parent->children[a].firstCharacter;
-        if (v==c || v==-1) return a;
-        ++a;
-    }
-    return -1;
+     Edge f(NULL, 0, 0); f.firstCharacter=c;
+     int id=parent->children.findIndex(f);
+     if (id>=0) return id;
+     f.firstCharacter=-1;
+     return parent->children.findIndex(f);
 }
 
 UkkonenTree::Edge UkkonenTree::findEdge(Node* parent, int i){
-    return parent->children[i];
+    return parent->children.findByIndex(i);
 }
 
 
@@ -40,8 +42,8 @@ void UkkonenTree::calcFirstCharacter(Edge& e){
 
 void UkkonenTree::addEdge(Node* parent, Edge& edge, int index){
     calcFirstCharacter(edge);
-    if (index<0) parent->children.push_back(edge);
-    else parent->children[index]=edge;
+    if (index<0) parent->children.insert(edge);
+    else parent->children.insertToIndex(index, edge);
 }
 
 
@@ -214,7 +216,7 @@ bool UkkonenTree::isSubstring(std::string& astr, int delta){
 
 std::string UkkonenTree::dotFormatDFS(Node* node, std::map<Node*, std::string>& names, int delta){
     if (!names.count(node)) names[node]=std::to_string(names.size()-2);
-    std::string ans="";
+    std::string ans="";/*
     for (int i=0; i<(int)node->children.size(); ++i) {
         Node* target=node->children[i].targetNode;
         int l=node->children[i].l;
@@ -228,7 +230,7 @@ std::string UkkonenTree::dotFormatDFS(Node* node, std::map<Node*, std::string>& 
     if (!names.count(node->suffixlink)) names[node->suffixlink]=std::to_string(names.size()-2);
     if (node->suffixlink){
         ans+="\t"+names[node]+" -> "+names[node->suffixlink]+" [style=dashed arrowhead=halfopen];\n";
-    }
+    }*/
     return ans;
 }
 
@@ -244,7 +246,6 @@ std::string UkkonenTree::getDotFormat(int delta){
     result+="\t"+dnames[aux]+" -> "+dnames[root]+";\n}";
     return result;
 }
-
 
 
 UkkonenTree::UkkonenTree(){

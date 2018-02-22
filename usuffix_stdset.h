@@ -20,7 +20,7 @@ public: //everything public to make unit testing easy
 
     std::vector<int> str; //The current string (represented as a vector of integers)
     
-    struct Node; //implemented in cpp-file
+    struct Node; //Is implemented in cpp-file
     struct Edge{
         Node* targetNode; //Where edge leads to
         int l, r; //Left and right pointer to the substring in str which corresponds to this edge
@@ -35,8 +35,8 @@ public: //everything public to make unit testing easy
             r=o.r;
             firstCharacter=o.firstCharacter;
         }
-        //FastSet and set uses this
-        bool operator<(const Edge& o) const{
+        //FastSet uses this
+        bool operator<(const Edge& o) const {
             return firstCharacter<o.firstCharacter;
         }
     };
@@ -104,8 +104,8 @@ public: //everything public to make unit testing easy
     void canonize(Reference& ref); // Make a reference canonical (Make the node pointed by reference lowest possible)
     
     
-    Node* root;
-    Node* aux; // The auxiliary state (Ukkonen, page 3)
+    Node root;
+    Node aux; // The auxiliary state (Ukkonen, page 3)
     
     Reference activePoint; //Ukkonen, page 9
     
@@ -121,7 +121,12 @@ public:
     bool isSubstring(std::vector<int>& astr, int delta=0);
     bool isSubstring(std::string& astr, int delta=0);
     
-    UkkonenTree();
+    UkkonenTree(){
+        Edge e(&root, -1, -1);
+        addEdge(&aux, e, -1);
+        setSuffixlink(&root, &aux); //Suffix link from root to auxiliary state
+        activePoint=Reference(&root, 0, -1); //initial active state is root
+    }
     
     
     
