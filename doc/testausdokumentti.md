@@ -25,13 +25,13 @@ Vertasin eri toteutuksia toisiinsa mittaamalla time-komennolla aikaa satunnaises
 
 Taulukko aikavaatimuksista. Vertailussa mukana olevan std::setin vaatimukset ovat samoja kuin FastSetin.
 
-|                      || Vector        | Vector, järjestystä ylläpitäen | Taulukko[AAKKOSTON KOKO] | FastSet    |
-| -------------------- || ------------- | ------------------------------ | ------------------------ | ---------- |
-| Edgen haku           || O(m)          | O(log m)                       | O(1)                     | O(log m)   |
-| Edgen lisäys         || O(m)          | O(m)                           | O(1)                     | O(log m)   |
-| Noden lisäys         || O(1)          | O(1)                           | O(m)                     | O(1)       |
-| Kokonaisaikavaatimus || O(m*n)        | O(m*n)                         | O(m*n)                   | O(n log m) |
-| Muistinkäyttö        || O(n)          | O(n)                           | O(m*n)                   | O(n)       |
+|                      | Vector        | Vector, järjestystä ylläpitäen | Taulukko[AAKKOSTON KOKO] | FastSet    |
+| -------------------- | ------------- | ------------------------------ | ------------------------ | ---------- |
+| Edgen haku           | O(m)          | O(log m)                       | O(1)                     | O(log m)   |
+| Edgen lisäys         | O(m)          | O(m)                           | O(1)                     | O(log m)   |
+| Noden lisäys         | O(1)          | O(1)                           | O(m)                     | O(1)       |
+| Kokonaisaikavaatimus | O(m*n)        | O(m*n)                         | O(m*n)                   | O(n log m) |
+| Muistinkäyttö        | O(n)          | O(n)                           | O(m*n)                   | O(n)       |
 
 
 Kaaviossa mitatut ajat, kun syötteen koko on 2000000, aakkoston kokoa muutetaan. X-akselilla on logaritminen skaalaus.
