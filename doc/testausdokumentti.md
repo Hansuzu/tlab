@@ -36,7 +36,7 @@ Taulukko aikavaatimuksista. Vertailussa mukana olevan std::setin vaatimukset ova
 
 Kaaviossa mitatut ajat, kun syötteen koko on 2000000, aakkoston kokoa muutetaan. X-akselilla on logaritminen skaalaus.
 
-![2000000](https://raw.githubusercontent.com/Hansuzu/tlab/tree/master/doc/alphabet.png)
+![2000000](https://raw.githubusercontent.com/Hansuzu/tlab/master/doc/alphabet.png)
 
 Punainen viiva: Vector
 Sininen viiva: FastSet
