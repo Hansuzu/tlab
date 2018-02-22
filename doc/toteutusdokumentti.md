@@ -10,17 +10,13 @@ Toteutin Ukkosen algoritmin tallentaen edget eri tavoilla. Mittasin eri toteutus
 
 Tässä taulukko työssä toteutetuista edgejen tallennustavoista .
 
-                    | Vector        | Vector, järjestystä ylläpitäen | Taulukko[AAKKOSTON KOKO] | FastSet    |
-                    | ------------- | ------------------------------ | ------------------------ | ---------- |
-Edgen haku          | O(m)          | O(log m)                       | O(1)                     | O(log m)   |
-                    | ------------- | ------------------------------ | ------------------------ | ---------- |
-Edgen lisäys        | O(m)          | O(m)                           | O(1)                     | O(log m)   |
-                    | ------------- | ------------------------------ | ------------------------ | ---------- |
-Noden lisäys        | O(1)          | O(1)                           | O(m)                     | O(1)       |
-                    | ------------- | ------------------------------ | ------------------------ | ---------- |
-Kokonaisaikavaatimus| O(m*n)        | O(m*n)                         | O(m*n)                   | O(n log m) |
-                    | ------------- | ------------------------------ | ------------------------ | ---------- |
-Muistinkäyttö       | O(n)          | O(n)                           | O(m*n)                   | O(n)       |
+|                      | Vector        | Vector, järjestystä ylläpitäen | Taulukko[AAKKOSTON KOKO] | FastSet      |
+| -------------------- | ------------- | ------------------------------ | ------------------------ | ------------ |
+| Edgen haku           | O(m)          | O(log m)                       | O(1)                     | O(log^2 m)   |
+| Edgen lisäys         | O(m)          | O(m)                           | O(1)                     | O(log^2 m)   |
+| Noden lisäys         | O(1)          | O(1)                           | O(m)                     | O(1)         |
+| Kokonaisaikavaatimus | O(m*n)        | O(m*n)                         | O(m*n)                   | O(n log^2 m) |
+| Muistinkäyttö        | O(n)          | O(n)                           | O(m*n)                   | O(n)         |
 
 
 

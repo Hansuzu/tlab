@@ -23,15 +23,15 @@ Satunnaistestit generoidaan generoimalla ensin satunnainen merkkijono. Sen jälk
 
 Vertasin eri toteutuksia toisiinsa mittaamalla time-komennolla aikaa satunnaisesti generoidun merkkijonon suffiksipuun muodostamiseen. Kansiossa bin/speedtest on python-skriptit, jolla mittasin suoritusajat.
 
-Taulukko aikavaatimuksista. Vertailussa mukana olevan std::setin vaatimukset ovat samoja kuin FastSetin.
+Taulukko aikavaatimuksista.
 
-|                      | Vector        | Vector, järjestystä ylläpitäen | Taulukko[AAKKOSTON KOKO] | FastSet    |
-| -------------------- | ------------- | ------------------------------ | ------------------------ | ---------- |
-| Edgen haku           | O(m)          | O(log m)                       | O(1)                     | O(log m)   |
-| Edgen lisäys         | O(m)          | O(m)                           | O(1)                     | O(log m)   |
-| Noden lisäys         | O(1)          | O(1)                           | O(m)                     | O(1)       |
-| Kokonaisaikavaatimus | O(m*n)        | O(m*n)                         | O(m*n)                   | O(n log m) |
-| Muistinkäyttö        | O(n)          | O(n)                           | O(m*n)                   | O(n)       |
+|                      | Vector        | Vector, järjestystä ylläpitäen | Taulukko[AAKKOSTON KOKO] | FastSet      | std::set   |
+| -------------------- | ------------- | ------------------------------ | ------------------------ | ------------ | ---------- |
+| Edgen haku           | O(m)          | O(log m)                       | O(1)                     | O(log^2 m)   | O(log m)   |
+| Edgen lisäys         | O(m)          | O(m)                           | O(1)                     | O(log^2 m)   | O(log m)   |
+| Noden lisäys         | O(1)          | O(1)                           | O(m)                     | O(1)         | O(1)       |
+| Kokonaisaikavaatimus | O(m*n)        | O(m*n)                         | O(m*n)                   | O(n log^2 m) | O(n log m) |
+| Muistinkäyttö        | O(n)          | O(n)                           | O(m*n)                   | O(n)         | O(n)       |
 
 
 Kaaviossa mitatut ajat, kun syötteen koko on 2000000, aakkoston kokoa muutetaan. X-akselilla on logaritminen skaalaus. Aakkoston kokona on testattu tässä eri 2:n potensseja. Kuvaan on otettu joka koolta viiden kerran keskiarvo. Testit on suoritettu satunnaisessa järjestyksessä, jolloin koneen suoritusnopeuden vaihtelun vaikutus tasoittuu.
