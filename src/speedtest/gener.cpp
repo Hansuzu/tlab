@@ -8,6 +8,7 @@ int MX=32;
 
 int main(int argc, char** argv){
     ios_base::sync_with_stdio(0); cin.tie(0);
+    srand(time(NULL));
     for (int i=0; i<argc; ++i){
         if (argv[i][0]=='Z'){
             string s(&argv[i][1]);
