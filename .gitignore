@@ -2,3 +2,6 @@
 !*.*
 !*/
 !makefile
+*.log
+*.aux
+*.toc
