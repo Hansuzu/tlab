@@ -19,30 +19,38 @@
 
   \section{Johdanto}
 
-    Projektissa on toteutettu Ukkosen algoritmi ja toteutettu Ukkosen algoritmilla toimiva ratkaisu 
-    Longest common substring -ongelmaan. (LCS = TODO)
+    Projektissa on toteutettu Ukkosen algoritmi suffiksipuun muodostamiseen ja toteutettu Ukkosen algoritmilla toimiva ratkaisu 
+    Longest common substring -ongelmaan.
 
-    Lisäksi työssä on toteutettu itse Vector (vector.h automaattisesti kasvava taulukko), "FastSet"
-    (fastset.h nopea lisäys ja haku) ja Bitset -tietorakenteet.
-
+    Lisäksi työssä on toteutettu itse Vector (vector.h dynaaminen taulukko), "FastSet"
+    (fastset.h tietorakenne, jossa on nopea elementin lisäys ja haku) ja Bitset (bitset.h) -tietorakenteet.
+    
+ \newpage
  \section{Ukkosen algoritmin toteutus}
 
-    Toteutin Ukkosen algoritmin tallentaen edget eri tavoilla. Mittasin eri toteutusten tehokkuutta eri kokoisilla aakkostoilla.
+    Ukkosen algoritmi muodostaa suffiksipuun lineaarisessa ajassa merkkijonon kokoon nähden. Implementaationi Ukkosen
+    algoritmin ytimestä seuraa hyvin tarkasti Ukkosen paperissa pseudokoodilla kuvattuja funktioita, ja saavutettu
+    aikavaatimus on ideaalinen, $O(n)$ aakkoston koon ollessa vakio.
+    
+    Toteutin Ukkosen algoritmin tallentaen edget eri tavoilla. Kaikki toteutukset ovat merkkijonon pituuden suhteen
+    lineaarisia, mutta niiden nopeus vaihtelee aakkoston koon mukaan.
 
-    Tässä taulukko työssä toteutetuista edgejen tallennustavoista .
+    Tässä taulukko työssä toteutetuista edgejen tallennustavoista. $n$ on merkkijonon pituus ja $m$ aakkoston koko.
     \\
     \begin{tabular}{c|c|c|c|c} \hline
-                            & \textbf{Vector}& \textbf{Vector järjest,} & \textbf{Taulukko} & \textbf{FastSet} \\ \hline
+                            & \textbf{Vector}& \textbf{Vector järjest.} & \textbf{Taulukko} & \textbf{FastSet} \\ \hline
         Edgen haku          & $O(m)$         & $O(\log m)$              & $O(1)$            & $O(\log^2 m)$     \\ \hline
         Edgen lisäys        & $O(m)$         & $O(m)$                   & $O(1)$            & $O(\log m)$       \\ \hline
         Noden lisäys        & $O(1)$         & $O(1)$                   & $O(m)$            & $O(1)$           \\ \hline
         Kok. aikavaatimus   & $O(n*m)$       & $O(n*m)$                 & $O(n*m)$          & $O(n \log^2 m)$   \\ \hline
         Muistinkäyttö       & $O(n)$         & $O(n)$                   & $O(n*m)$          & $O(n)$           \\
     \end{tabular}
+    (Vector on toteuttamani dynaamisen kokoinen taulukko. "FastSet" taas on toteuttamani nopeampia lisäys- ja haku -operaatioita
+    tukeva tietorakenne)
     
     \subsection{Implementaatio-rakenteesta...}
-        Ensimmäisenä toteutettu taulukko-implementaatio eroaa muista, koska siinä UkkonenTree on template-luokka. (muissa
-        implementaatioissa on siitä kopioitu suurin osa puun perusrakenteesta) Kaikki muut versiot implementoivat
+        Ensimmäisenä toteutettu taulukko-implementaatio eroaa muista siinä, että sen UkkonenTree on template-luokka. (muissa
+        implementaatioissa on taas siitä kopioitu suurin osa puun perusrakenteesta) Kaikki muut versiot implementoivat
         usuffix.h -headerissa määritellyn UkkonenTree -luokan kukin omalla tavallaan, mikä mahdollistaa mm. eri luokkien 
         testausohjelmien compilaamisen samasta lähdekoodista.
         
@@ -55,45 +63,64 @@
         paljon säätöä, ja kun lopullisissa ohjelmissa UkkonenTree kuitenkin käyttää aina samaa Node-luokan toteutusta,
         tuntuisi turhalta lisätä UkkonenTree -luokkaan tietoa mahdollisuudesta, että Noden implementaatio voisi olla 
         vaihdella.
-    
+        
+  \newpage
   \section{"FastSetin" aikavaatimus}
 
     "FastSet" on tietorakenne, jossa säilytetään elementtejä järjestetyissä vektoreissa, joiden koot ovat 2:n potensseja.  
-    (en tiedä, mikä on tämän tietorakenteen oikea nimi, jos sillä on sellainen)
-
-    Hakeminen tapahtuu binäärihakemalla jokaisesta vektorista. Vektoreita on enintään $\log_2n$, jolloin binäärihakujen 
-    aikavaatimukseksi tulee yhteensä enintään $\sum_{i=0}^{\lfloor \log_2n \rfloor}{\log_2{2^i}}\leq \log_2^2 n$. Keskimäärin
-    binäärihakuja tarvitsee tehdä n. puolet tästä, joten hakemisen keskiarvoinen aikavaatimukseksi tulee $O(\log_2^2 n)$.
-
-    Elementin lisääminen toteutetaan käytännössä luomalla ensin setti, jossa on vain lisättävä elementti ja yhdistämällä 
-    se alkuperäisen setin kanssa.
+    (en tiedä, mikä on tämän tietorakenteen oikea nimi, jos sillä on sellainen). Käytän tästä vektorijoukosta tässä 
+    analyysissä nimitystä vektorisetti. Vektorisetin koolla tarkoitan vektorisetin suurimman vektorin järjestyslukua.
+    (Järjestysluvultaan $n$:nnen vektorin koon ollessa $2^{n-1}$) Esimerkiksi 10 elementtiä sisältävässä vektorisetissä olisi 
+    kaksi täytettyä vektoria, joiden koot ovat 2 ja 8, ja vektorisetin koko olisi tällöin 4. (väliin jäävät puuttuvat vektorit 
+    voidaan ajatella tyhjiksi, jolloin vektorisetissä olisivat vektorit $1_{tyhja}$, $2_{taysi}$, $3_{tyhja}$ ja $4_{taysi}$.)
     
-    Kaksi settiä voi yhdistää käymällä läpi molempien vektorit ja yhdistämällä samankokoiset vektorit (jos molemmissa sen
-    kokoinen vektori on täysi). Aikavaatimus vektorien yhdistämiseen on $O(k)$, missä $k$ on uuden vektorin koko. 
-    Kokonaisaikavaatimus yhdistämisessä on siis enintään $O(\log_2^2 n+log_2^2 m)$. Kesimimäärin yhdistämisen aikavaatimus 
-    on kuitenkin $O(log_2 n + log m)$, kun settien koot ovat $n$ ja $m$.
+    Pseudokoodissa merkinnällä $A[i]$ tarkoitetaan vektorisetin $A$ vektoria, jonka koko on $2^i$. Tämä vektori saattaa
+    olla tyhjä tai täysi.
     \\ \\
-    Pseudokoodi yhdistämiselle: \\
+    Hakeminen tietorakenteesta tapahtuu binäärihakemalla jokaisesta vektorista. Elementtien määrän ollessa $n$ vektoreita on 
+    enintään $\log_2n$, jolloin binäärihakujen aikavaatimukseksi tulee yhteensä enintään $\sum_{i=0}^{\lfloor \log_2n \rfloor}
+    {\log_2{2^i}}\leq \log_2^2 n$. Keskimäärinkin binäärihakuja tarvitsee tehdä n. puolet tästä, joten hakemisen keskiarvoiseksi
+    aikavaatimukseksi tulee $O(\log_2^2 n)$.
+    \\ \\
+    Elementin lisääminen toteutetaan käytännössä luomalla ensin vektorisetti, jossa on vain lisättävä elementti ja yhdistämällä 
+    se alkuperäisen vektorisetin kanssa.
+    
+    Kaksi vektorisettiä voi yhdistää käymällä läpi molempien vektorit pienimmästä lähtien ja yhdistämällä samankokoiset vektorit 
+    (jos molemmissa sen kokoinen vektori on täysi). Aikavaatimus kahden järjestetyn vektorin yhdistämiseen järjestetty vektori
+    tuottaen on $O(k)$, missä $k$ on uuden vektorin koko. Kokonaisaikavaatimus yhdistämisessä voi siis pahimmillaan olla $O(n)$,
+    kun vektorisetissä on yhteensä n elementtiä. Keskimäärin operaatio on kuitenkin paljon nopeampi. Yhden elementin lisäämisen
+    keskimääräinen aikavaatimus on $O(\log_2 n)$, mikä todistetaan alempana.
+    
+    Pseudokoodi yhdistämiselle:
+    \\ \\
     \begin{algorithm}[H]
-        \For{}{
-            read current\;
-            \eIf{understand}{
-            go to next section\;
-            current section becomes this one\;
+        carryVector:=\{\}\;
+        i:=0\;
+        \While{i$<$size of B or carryVector is not empty}{
+            \eIf{none of A[i], B[i] and carryVector is empty}{
+                carryVector:=merge vectors B[i] and carryVector\;
             }{
-            go back to the beginning of current section\;
+                \eIf{two of A[i], B[i] and carryVector are not empty}{
+                    carryVector:=merge the two\;
+                    A[i]=\{\}\;
+                }{
+                    A[i]=one of \{A[i], B[i], carryVector\} which has maximum size\;
+                }
             }
+            i:=i+1\;
         }
-        \caption{How to write algorithms}
+        \caption{Merge vectorset B to A}
     \end{algorithm}
     
+    \medskip \medskip
     \textbf{Todistus elementin lisäämisen keskimääräiselle aikavaatimukselle}
 
-    Olkoon jokainen elementti $i$ $n$-kokoisessa setissä vektorissa jonka koko on $2^k_i$. Tällöin elementti $i$ on ollut mukana
+    Olkoon jokainen elementti $i$ $n$-kokoisessa vektorisetissä vektorissa jonka koko on $2^k_i$. Tällöin elementti $i$ on ollut mukana
     yhdistämisoperaatiossa $k_i$ kertaa. (Alussa $k_i=0$ ja jokaisessa yhdistämisessä se kasvaa yhdellä) Kokonaisaikavaatimus 
     setin rakentamiseen on tällöin $\sum_{i=1}^n{k_i}$. Koska $k_i\leq \log_2n$, kokonaisaikavaatimus on enintään
-    $n\log_2n$, jolloin keskimääräinen aikavaatimus elementin lisäämiselle on $\log_2 n$
+    $n\log_2n$, jolloin keskimääräinen aikavaatimus elementin lisäämiselle on $\log_2 n$.
 
+  \newpage
   \section{Longest common substring}
     Longest Common Substring on ongelma, jossa halutaan selvittää joukolle merkkijonoja, mikä on pisin kaikille merkkijonoille
     yhteinen substring.
@@ -101,5 +128,56 @@
     Longest Common Substring-ongelman voi ratkaista suffiksipuulla $O(N*K)$ -ajassa, missä $N$ on merkkijonojen yhteispituus ja
     $K$ merkkijonojen määrä. Toteutin tällaisen LCS-algoritmin.
     
-    Ratkaisu
+    Ideana on muodostaa suffiksipuu merkkijonoista muodostetulla merkkijonolle, jossa jokaista merkkijonoa seuraa oma päätteensä.
+    Esimerkiksi merkkijonoista $abbabb$, $ccbbabcc$ ja $ababc$ voitaisiin muodostaa merkkijono $abbabb\$_0ccbbabcc\$_1ababc\$_2$
+    ja sille suffiksipuu. ($\$_0$, $\$_1$ ja $\$_2$ ovat jokainen oma erityismerkkinsä)
+    
+    Tässä suffiksipuussa jokainen $\$_i$ on varmasti lehteen vievällä edgellä, koska haarautuminen edellyttäisi sitä, että
+    haarautumiskohtaa vastaava merkkijono esiintyy substringinä vähintään kaksi kertaa alkuperäisessä merkkijonossa. Haarautuminen
+    $\$_i$:n jälkeen tarkoittaisi siis sitä, että olisi ainakin kaksi samanlaista substringiä, joissa merkki $\$_i$ olisi mukana,
+    mikä on mahdotonta $\$_i$:n ollessa uniikki. Koska merkkijonon viimeinenkin merkki on erityismerkki, jokaisella lehteen vievällä
+    edgellä on ainakin yksi erityismerkki.
+    
+    Jokaista nodea, joka ei ole lehti, vastaa siis substring, jossa ei ole mukana erityismerkkejä. Pisimmän yhteisen substringin
+    on oltava jokin näistä nodeja vastaavista substringeistä. (Edgen keskelle päättyvää substringiä voi aina pidentää seuraavaan nodeen,
+    koska edgen keskellä olevaa ja seuraavaa nodea vastaavilla substringeillä on samat esiintymät alkuperäisessä merkkijonossa, ja
+    lehdistä ei voi tulla ratkaisuja.)
+    
+    Nodea vastaava substring on erityismerkkiin $\$_i$ päättyvän merkkijonon substring jos ja vain jos noden alipuussa on lehti, jossa
+    $\$_i$ on ensimmäinen erityismerkki.
+    
+    LCS on siis sellainen node, jonka alipuusssa on jokaiselle $\$_i$:lle lehti, jossa $\$_i$ on ensimmäinen erityismerkki, ja jota
+    vastaava merkkijono on mahdollisimman pitkä.
+    
+    Tällaisen noden etsiminen on helppo toteuttaa $O(N*K)$ -ajassa. Ratkaisussa rekursoin puun läpi ($(O(N))$ nodea) ja katson 
+    jokaisen noden kohdalla $K$-kokoisesta bitsetistä, millä $\$_i$:llä alkavia lehtiä sen noden alipuussa ovat. Tämän jälkeen
+    on vain valittava kaikkille merkkijonoille yhteisistä substringistä pisin/pisimmät, minkä toteutin vain käymällä taulukon
+    läpi.
+    \newpage
+    
+    Pseudokoodi rekursiiviselle funktiolle findCommonStrings:
+    \\ \\
+    \begin{algorithm}[H]
+        bitSet:=bitSet of size K initially filled with zeros\;
+        \For{each child of node}{
+            \eIf{child is leaf}{
+                bitSet.setBit(i of first $\$_i$ on edge)\;
+            }{
+                bitSet$|=$(findCommonStrings(child))\;
+            }
+        }
+        \If{every bit in bitSet is 1}{
+            commonStrings.append(node)\;
+        }
+        \Return{bitSet}
+        \caption{findCommonStrings}
+    \end{algorithm}
+
+    \medskip \medskip
+    Rekursiivinen funktio laittaa listaan commonStrings kaikki nodet, joita vastaava merkkijono on yhteinen kaikille merkkijonoille.
+    
+    Koko puun käsittelyn aikavaatimus on selvästi $O(N*K)$. Lopullisen vastauksen saa commonStrings-taulukosta $O(N)$ -ajassa.
+    
+    
+    
 \end{document}
