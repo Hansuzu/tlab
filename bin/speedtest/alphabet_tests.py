@@ -35,7 +35,7 @@ def program_name(index):
     if index==0: return "./speedtest"
     if index==1: return "./speedtest_fastset"
     if index==2: return "./speedtest_stdset"
-    if index==3: return "./speedtest_binary_search"
+    if index==3: return "./speedtest_ordered_vector"
     if index==4: return "./speedtest_array"
 
 def test_all(times):
@@ -88,7 +88,7 @@ def plot():
     plt.ylim(0, 5)
     plt.savefig("alphabet.png")
     plt.show()
-test_all(5)
+test_all(10)
 plot()
 print x
 print y

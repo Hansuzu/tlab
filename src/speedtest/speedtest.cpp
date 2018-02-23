@@ -1,9 +1,10 @@
-//Speedtests for vector implementations (linear and binary_search)
+#include <iostream>
+//Speedtests for other implementations but array
 #include <usuffix.h>
-#include <bits/stdc++.h>
+#include <vector.h>
 using namespace std;
 int n;
-vector<int> s;
+Vector<int> s;
 
 UkkonenTree eppapuu;
 

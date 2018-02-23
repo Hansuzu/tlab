@@ -20,7 +20,7 @@ UkkonenTree<1024> puu1024;
 pair<int, int> getDif(){
     int mn=1222333;
     int mx=0;
-    for (int i=0; i<s.size(); ++i){
+    for (int i=0; i<(int)s.size(); ++i){
         mn=min(mn, s[i]);
         mx=max(mx, s[i]);
     }

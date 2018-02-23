@@ -8,25 +8,28 @@ TARGETDIR=bin
 BUILDDIR=build
 HEADERDIR=include
 
-UFILES=$(SRCDIR)/usuffix.cpp $(HEADERDIR)/usuffix.h $(HEADERDIR)/vector.h
+UFILESC=$(SRCDIR)/usuffix.cpp $(HEADERDIR)/usuffix.h $(HEADERDIR)/vector.h $(HEADERDIR)/bitset.h 
+
+UFILES=$(UFILESC) $(SRCDIR)/usuffixnode_vector.cpp $(HEADERDIR)/vector.h
 UFILESP=$(UFILES) $(BUILDDIR)/usuffix.o
 
 UFILES_AR=$(HEADERDIR)/usuffix_array.cpp $(HEADERDIR)/usuffix_array.h
 
-UFILES_FS=$(SRCDIR)/usuffix_fastset.cpp $(HEADERDIR)/usuffix.h $(HEADERDIR)/fastset.h $(HEADERDIR)/vector.h
+UFILES_FS=$(UFILESC) $(SRCDIR)/usuffixnode_fastset.cpp $(HEADERDIR)/fastset.h
 UFILESP_FS=$(UFILES_FS) $(BUILDDIR)/usuffix_fastset.o
 
-UFILES_SS=$(SRCDIR)/usuffix_stdset.cpp $(HEADERDIR)/usuffix.h $(HEADERDIR)/vector.h
+UFILES_SS=$(UFILESC) $(SRCDIR)/usuffixnode_stdset.cpp
 UFILESP_SS=$(UFILES_FS) $(BUILDDIR)/usuffix_stdset.o
 
-UFILES_BS=$(SRCDIR)/usuffix_binary_search.cpp $(HEADERDIR)/usuffix.h $(HEADERDIR)/vector.h
-UFILESP_BS=$(UFILES_BS) $(BUILDDIR)/usuffix_binary_search.o
+UFILES_OV=$(UFILESC) $(SRCDIR)/usuffixnode_ordered_vector.cpp
+UFILESP_OV=$(UFILES_OV) $(BUILDDIR)/usuffix_ordered_vector.o
 
 
-all:    $(TARGETDIR)/substring/suffixalgo $(TARGETDIR)/substring/suffixalgo_fastset $(TARGETDIR)/substring/suffixalgo_stdset $(TARGETDIR)/substring/suffixalgo_binary_search $(TARGETDIR)/substring/brute \
+all:    $(TARGETDIR)/substring/suffixalgo $(TARGETDIR)/substring/suffixalgo_fastset $(TARGETDIR)/substring/suffixalgo_stdset $(TARGETDIR)/substring/suffixalgo_ordered_vector $(TARGETDIR)/substring/brute \
+	$(TARGETDIR)/LCS/lcs \
 	$(TARGETDIR)/visualizer/visualize \
-	$(TARGETDIR)/speedtest/speedtest $(TARGETDIR)/speedtest/speedtest_fastset $(TARGETDIR)/speedtest/speedtest_stdset $(TARGETDIR)/speedtest/speedtest_binary_search $(TARGETDIR)/speedtest/speedtest_array $(TARGETDIR)/speedtest/gener \
-	$(BUILDDIR)/usuffix.o $(BUILDDIR)/usuffix_fastset.o $(BUILDDIR)/usuffix_stdset.o $(BUILDDIR)/usuffix_binary_search.o
+	$(TARGETDIR)/speedtest/speedtest $(TARGETDIR)/speedtest/speedtest_fastset $(TARGETDIR)/speedtest/speedtest_stdset $(TARGETDIR)/speedtest/speedtest_ordered_vector $(TARGETDIR)/speedtest/speedtest_array $(TARGETDIR)/speedtest/gener \
+	$(BUILDDIR)/usuffix.o $(BUILDDIR)/usuffix_fastset.o $(BUILDDIR)/usuffix_stdset.o $(BUILDDIR)/usuffix_ordered_vector.o
 
 
 
@@ -44,8 +47,8 @@ $(TARGETDIR)/substring/suffixalgo_fastset: $(SRCDIR)/substring/suffixalgo.cpp $(
 $(TARGETDIR)/substring/suffixalgo_stdset: $(SRCDIR)/substring/suffixalgo.cpp $(UFILESP_SS)
 	$(CC) $(CFLAGS)  $(SRCDIR)/substring/suffixalgo.cpp  $(BUILDDIR)/usuffix_stdset.o -o $(TARGETDIR)/substring/suffixalgo_stdset
 
-$(TARGETDIR)/substring/suffixalgo_binary_search: $(SRCDIR)/substring/suffixalgo.cpp $(UFILESP_BS)
-	$(CC) $(CFLAGS)  $(SRCDIR)/substring/suffixalgo.cpp  $(BUILDDIR)/usuffix_binary_search.o -o $(TARGETDIR)/substring/suffixalgo_binary_search
+$(TARGETDIR)/substring/suffixalgo_ordered_vector: $(SRCDIR)/substring/suffixalgo.cpp $(UFILESP_OV)
+	$(CC) $(CFLAGS)  $(SRCDIR)/substring/suffixalgo.cpp  $(BUILDDIR)/usuffix_ordered_vector.o -o $(TARGETDIR)/substring/suffixalgo_ordered_vector
 
 $(TARGETDIR)/substring/brute: $(SRCDIR)/substring/brute.cpp
 	$(CC) $(CFLAGS)  $(SRCDIR)/substring/brute.cpp -o $(TARGETDIR)/substring/brute
@@ -54,6 +57,10 @@ $(TARGETDIR)/substring/brute: $(SRCDIR)/substring/brute.cpp
 
 $(TARGETDIR)/visualizer/visualize: $(SRCDIR)/visualizer/visualize.cpp $(UFILESP)
 	$(CC) $(CFLAGS)  $(SRCDIR)/visualizer/visualize.cpp  $(BUILDDIR)/usuffix.o -o $(TARGETDIR)/visualizer/visualize
+
+
+$(TARGETDIR)/LCS/lcs: $(SRCDIR)/LCS/lcs.cpp $(UFILESP)
+	$(CC) $(CFLAGS)  $(SRCDIR)/LCS/lcs.cpp  $(BUILDDIR)/usuffix.o -o $(TARGETDIR)/LCS/lcs
 
 
 
@@ -69,8 +76,8 @@ $(TARGETDIR)/speedtest/speedtest_fastset: $(SRCDIR)/speedtest/speedtest.cpp $(UF
 $(TARGETDIR)/speedtest/speedtest_stdset: $(SRCDIR)/speedtest/speedtest.cpp $(UFILESP_SS)
 	$(CC) $(CFLAGS)  $(SRCDIR)/speedtest/speedtest.cpp $(BUILDDIR)/usuffix_stdset.o -o $(TARGETDIR)/speedtest/speedtest_stdset
 
-$(TARGETDIR)/speedtest/speedtest_binary_search: $(SRCDIR)/speedtest/speedtest.cpp  $(UFILESP_BS)
-	$(CC) $(CFLAGS)  $(SRCDIR)/speedtest/speedtest.cpp $(BUILDDIR)/usuffix_binary_search.o -o $(TARGETDIR)/speedtest/speedtest_binary_search
+$(TARGETDIR)/speedtest/speedtest_ordered_vector: $(SRCDIR)/speedtest/speedtest.cpp  $(UFILESP_OV)
+	$(CC) $(CFLAGS)  $(SRCDIR)/speedtest/speedtest.cpp $(BUILDDIR)/usuffix_ordered_vector.o -o $(TARGETDIR)/speedtest/speedtest_ordered_vector
 
 $(TARGETDIR)/speedtest/gener: $(SRCDIR)/speedtest/gener.cpp
 	$(CC) $(CFLAGS)  $(SRCDIR)/speedtest/gener.cpp  -o $(TARGETDIR)/speedtest/gener
@@ -78,16 +85,16 @@ $(TARGETDIR)/speedtest/gener: $(SRCDIR)/speedtest/gener.cpp
 
 
 $(BUILDDIR)/usuffix.o: $(UFILES)
-	$(CC) $(CFLAGS) $(SRCDIR)/usuffix.cpp -o $(BUILDDIR)/usuffix.o -c 
+	$(CC) $(CFLAGS) $(SRCDIR)/usuffixnode_vector.cpp -o $(BUILDDIR)/usuffix.o -c 
 
 $(BUILDDIR)/usuffix_fastset.o: $(UFILES_FS)
-	$(CC) $(CFLAGS) $(SRCDIR)/usuffix_fastset.cpp -o $(BUILDDIR)/usuffix_fastset.o -c 
+	$(CC) $(CFLAGS) $(SRCDIR)/usuffixnode_fastset.cpp -o $(BUILDDIR)/usuffix_fastset.o -c 
 
 $(BUILDDIR)/usuffix_stdset.o: $(UFILES_SS)
-	$(CC) $(CFLAGS) $(SRCDIR)/usuffix_stdset.cpp -o $(BUILDDIR)/usuffix_stdset.o -c 
+	$(CC) $(CFLAGS) $(SRCDIR)/usuffixnode_stdset.cpp -o $(BUILDDIR)/usuffix_stdset.o -c 
 
-$(BUILDDIR)/usuffix_binary_search.o: $(UFILES_BS)
-	$(CC) $(CFLAGS) $(SRCDIR)/usuffix_binary_search.cpp -o $(BUILDDIR)/usuffix_binary_search.o -c 
+$(BUILDDIR)/usuffix_ordered_vector.o: $(UFILES_OV)
+	$(CC) $(CFLAGS) $(SRCDIR)/usuffixnode_ordered_vector.cpp -o $(BUILDDIR)/usuffix_ordered_vector.o -c 
 
 
 clean:

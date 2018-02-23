@@ -70,10 +70,32 @@ public:
                 if (vecs[i][m]<v) a=m+1;
                 else b=m;
             }
-            if (!(vecs[i][a]<v || v<vecs[i][a])) return (1<<i)+a;
+            if (!(vecs[i][a]<v || v<vecs[i][a])) return (1<<i)|a;
         }
         return -1;
     }
+    
+    int nextIndex(int ix){
+        if (ix<0) return -1;
+        
+        int i=31 - __builtin_clz(ix);
+        int a=ix^(1<<i);
+        ++a;
+        while (i<(int)vecs.size()){
+            if (a<(int)vecs[i].size()){
+                return (1<<i)|a;
+            }
+            a=0;
+            ++i;
+        }
+        return -1;
+    }
+    int firstIndex(){
+        int i=0; int a=0;
+        if (vecs[0].size()) return (1<<i)|a;
+        return nextIndex((1<<i)|a);
+    }
+    
     int findIndex_(T v){
         return findIndex(v);
     }

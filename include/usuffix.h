@@ -1,8 +1,15 @@
-#include <bits/stdc++.h> //include everything from standard library (will be later replaced with something all removed...)
+#include <vector.h>
+#include <bitset.h>
+#include <pair.h>
+
+
+#include <vector>
+#include <string> //std::string, used 
+#include <map> //std::map, used in drawing (could be replaced with something else)
+
 #ifndef USUFFIX_H
 #define USUFFIX_H
 
-#include <fastset.h>
 
 //Ukkonen's paper: https://www.cs.helsinki.fi/u/ukkonen/SuffixT1withFigs.pdf
 
@@ -18,9 +25,10 @@ class UkkonenTree{
 public: //everything public to make unit testing easy
     //
 
-    std::vector<int> str; //The current string (represented as a vector of integers)
+    Vector<int> str; //The current string (represented as a vector of integers)
+    //Characters are assumed to be greater than or equal to zero.
     
-    struct Node; //implemented in cpp-file
+    struct Node; //implemented in usuffixnode*.cpp-file
     struct Edge{
         Node* targetNode; //Where edge leads to
         int l, r; //Left and right pointer to the substring in str which corresponds to this edge
@@ -40,17 +48,10 @@ public: //everything public to make unit testing easy
             return firstCharacter<o.firstCharacter;
         }
     };
-    void calcFirstCharacter(Edge& e); // When edge created or edited, this shoudl be called. This updates firstCharacter.
     
-    
-    //Following functinos are used internally:
-    int findChildIndex(Node* parent, int c); //Finds a edge of character c. Returns -lower_bound-1 (negative number) if edge does not exist.
-    Edge findEdge(Node* parent, int i); //returns the edge with index i
+    void calcFirstCharacter(Edge& edge); //Calculate the first character of an edge
     
     Node* addChild(Node* node, int l, int r, int index); //creates new child node for a node, returns a pointer to the newly created node
-    void addEdge(Node* parent, Edge& edge, int index); //adds an edge from node to child 
-    void setSuffixlink(Node* from, Node* to);
-    
     
     
     struct Reference{ //Ukkonen, page 8
@@ -85,18 +86,14 @@ public: //everything public to make unit testing easy
         
     };
     
-    int childIndex(Reference& ref){
-        int id=ref.getChildIndex();
-        if (id==-99) return ref.setChildIndex(findChildIndex(ref.getS(), str[ref.getL()]));
-        return id;
-    }
+    int childIndex(Reference& ref);
     
     
     //Ukkonen, pages 11,12,13
     void update(Reference& ref); // follows boundary route from ref (canonical) to end-point
                                      // calls canonize and testAndSplit
                                      // 
-    std::pair<bool, Node*> testAndSplit(Reference& ref, int chr); //Takes a canonical reference and character which is being appended to str
+    Pair<bool, Node*> testAndSplit(Reference& ref, int chr); //Takes a canonical reference and character which is being appended to str
                                                                  //Makes referenced state explicit by splitting an edge it if needed.
                                                                  //Returns new state and <0 if it is not an end-point (chr-transition did not exist)
                                                                  //Returned value is a index where chr-transition can be inserted
@@ -112,19 +109,36 @@ public: //everything public to make unit testing easy
     
 public:    
     void push(int chr); // append a single character to the tree
-    void push(std::vector<int>& astr, int delta=0); // append a  string represented as std::vector<int> to the tree (adds delta to each integer)
+    void push(Vector<int>& astr, int delta=0); // append a  string represented as std::vector<int> to the tree (adds delta to each integer)
     void push(std::string& astr, int delta=0);  //append a string represented as std::string to the tree
     
     
     Reference getChild(Reference ref, int c); // If there exist a state ref+c, return canonized reference to it. If fail, returned Reference.s=NULL
     
-    bool isSubstring(std::vector<int>& astr, int delta=0);
+    bool isSubstring(Vector<int>& astr, int delta=0);
     bool isSubstring(std::string& astr, int delta=0);
+    
+    
+    
+    //LCS -recursive search
+    bool findCSNodes(Node* position, Bitset& currentState, Vector<int>& terminator_positions, Vector<Pair<Node*, Pair<int, int> > >& positions, int depth, int last_character); //Find recursively deepest nodes that are substrings of all strings
+    
+    Pair<int, Vector<int> > findLongestCommonSubstrings(Vector<int> terminator_positions); 
+    //^Returns length of longest common substring and some start-positions of them
+    //terminator_positions is the positions of the terminator-characters separating different strings.
+    //terminator_positions is assumed to be sorted in increasing order,
+    //For example for strings abbaba, abba and bbab the tree could be made of string  abbaba$abba#bbab%
+    //The terminator positions would then be 6, 11 and 16
+    //Algorithm would return number 3 (length of LCS) and Vector of size 1. The index in vector could be 1, 8 or 12 (the positions of the LCS bba)
+    //If there were multiple different longest common substrings, the Vector would contain one index pointing each of them
+    //Works in O(n*m) where n is the total size of string in tree and m is the number of strings
+    
     
     UkkonenTree();
     
     
     
+    //For drawing only, these contain std::functinos.
     std::map<Node*, std::string> dnames;
     std::string dotFormatDFS(Node* node, std::map<Node*, std::string>& names, int delta=0); // getDotFormat calls this, handles the subtree of node
     std::string getDotFormat(int delta=0); // Returns tree represented in the format used by command line tool dot (which can be used to draw it)

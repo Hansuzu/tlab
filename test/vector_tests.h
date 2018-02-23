@@ -1,12 +1,13 @@
 #include <cxxtest/TestSuite.h>
 
+#include <iostream>
 #include <vector.h>
 
 class Tests : public CxxTest::TestSuite {
 public:
      //Init UkkonenTree of a certain alphabetSize and test if the pointers of root Node are initialized to NULL
     void testInsert1(){
-        vector<int> p;
+        Vector<int> p;
         p.push_back(1);
         p.push_back(2);
         p.push_back(0);
@@ -16,7 +17,7 @@ public:
         TS_ASSERT_EQUALS(p[2], 0);
     }
     void testAccess(){
-        vector<int> p;
+        Vector<int> p;
         p.push_back(1);
         p.push_back(2);
         p.push_back(0);
@@ -26,8 +27,9 @@ public:
         TS_ASSERT_EQUALS(t, 2);
         TS_ASSERT_EQUALS(p[1], 2);
     }
+    
     void testLargeArray(){
-        vector<int> p;
+        Vector<int> p;
         for (int i=0; i<1000000; ++i){
             p.push_back(i);
         }
@@ -39,16 +41,27 @@ public:
             TS_ASSERT_EQUALS(p[i], -i);
         }
     }
+    
     void test_resize(){
-        vector<int> p;
+        Vector<int> p;
         p.resize(2500);
         for (int i=0; i<2500; ++i) p[i]=2;
         for (int i=0; i<2500; ++i) TS_ASSERT_EQUALS(p[i], 2);
     }
     
+    void test_shrink_to_fit(){
+        Vector<int> p;
+        for (int i=2500; i>0; --i){
+            p.resize(i);
+            p.shrink_to_fit();
+            bool ok=(p.container_size()>=p.size() && p.container_size()<2*p.size());
+            TS_ASSERT_EQUALS(ok, 1);
+        }
+    }
+    
     void test_swap(){
-        vector<int> p1;
-        vector<int> p2;
+        Vector<int> p1;
+        Vector<int> p2;
         for (int i=0; i<200; ++i) p1.push_back(i);
         for (int i=0; i<4000; ++i) p2.push_back(-i);
         p1.swap(p2);
