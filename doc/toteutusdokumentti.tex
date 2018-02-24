@@ -90,10 +90,10 @@
     se alkuperäisen vektorisetin kanssa.
     
     Kaksi vektorisettiä voi yhdistää käymällä läpi molempien vektorit pienimmästä lähtien ja yhdistämällä samankokoiset vektorit 
-    (jos molemmissa sen kokoinen vektori on täysi). Aikavaatimus kahden järjestetyn vektorin yhdistämiseen järjestetty vektori
-    tuottaen on $O(k)$, missä $k$ on uuden vektorin koko. Kokonaisaikavaatimus yhdistämisessä voi siis pahimmillaan olla $O(n)$,
-    kun vektorisetissä on yhteensä n elementtiä. Keskimäärin operaatio on kuitenkin paljon nopeampi. Yhden elementin lisäämisen
-    keskimääräinen aikavaatimus on $O(\log_2 n)$, mikä todistetaan alempana.
+    (jos molemmissa sen kokoinen vektori on täysi). Samalla tyhjennetään yhdistettävän vektorisetin vektorit. Aikavaatimus kahden 
+    järjestetyn vektorin yhdistämiseen järjestetty vektori tuottaen on $O(k)$, missä $k$ on uuden vektorin koko. Kokonaisaikavaatimus
+    yhdistämisessä voi siis pahimmillaan olla $O(n)$, kun vektorisetissä on yhteensä n elementtiä. Keskimäärin operaatio on kuitenkin
+    selvästi nopeampi. Yhden elementin lisäämisen keskimääräinen aikavaatimus on $O(\log_2 n)$, mikä todistetaan alempana.
     
     Pseudokoodi yhdistämiselle:
     \\ \\
@@ -103,12 +103,14 @@
         \While{i$<$size of B or carryVector is not empty}{
             \eIf{none of A[i], B[i] and carryVector is empty}{
                 carryVector:=merge vectors B[i] and carryVector\;
+                B[i]:=\{\}\;
             }{
                 \eIf{two of A[i], B[i] and carryVector are not empty}{
                     carryVector:=merge the two\;
-                    A[i]=\{\}\;
+                    A[i]:=\{\}\;
+                    B[i]:=\{\}\;
                 }{
-                    A[i]=one of \{A[i], B[i], carryVector\} which has maximum size\;
+                    swap(A[i], $\max_{size}$ \{B[i], carryVector\})\;
                 }
             }
             i:=i+1\;
@@ -118,11 +120,14 @@
     
     \medskip \medskip
     \textbf{Todistus elementin lisäämisen keskimääräiselle aikavaatimukselle}
-
+    Pseudokoodissa esitetty swap-operaation oletetaan toimivan $O(1)$ -ajassa. Näin ollen algoritmin aikavaatimukseksi tulee
+    $O(\log n + M)$, missä $M$ on yhdistämisoperaatioiden kokonaisaikavaatimus.
+    \\ \\
     Olkoon jokainen elementti $i$ $n$ elementtiä sisältävässä vektorisetissä vektorissa jonka koko on $2^{k_i}$. Tällöin
     elementti $i$ on ollut mukana yhdistämisoperaatiossa $k_i$ kertaa. (Alussa $k_i=0$ ja jokaisessa yhdistämisessä 
-    se kasvaa yhdellä) Kokonaisaikavaatimus vektorisetin rakentamiseen on tällöin $\sum_{i=1}^n{k_i}$. Koska $k_i\leq \log_2n$,
-    kokonaisaikavaatimus on enintään $n\log_2n$, jolloin keskimääräinen aikavaatimus elementin lisäämiselle on $\log_2 n$.
+    se kasvaa yhdellä) Kokonaisaikavaatimus vektorisetin rakentamisen yhdistämisoperaatioihin on tällöin $\sum_{i=1}^n{k_i}$. 
+    Koska $k_i\leq \log_2n$, kokonaisaikavaatimus on enintään $n\log_2n$, jolloin keskimääräinen aikavaatimus elementin 
+    lisäämiselle on $O(\log_2 n)$.
 
   \newpage
   \section{Longest Common Substring}
