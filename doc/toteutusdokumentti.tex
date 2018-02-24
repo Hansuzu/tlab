@@ -35,18 +35,21 @@
     Toteutin Ukkosen algoritmin tallentaen edget eri tavoilla. Kaikki toteutukset ovat merkkijonon pituuden suhteen
     lineaarisia, mutta niiden nopeus vaihtelee aakkoston koon mukaan.
 
-    Tässä taulukko työssä toteutetuista edgejen tallennustavoista. $n$ on merkkijonon pituus ja $m$ aakkoston koko.
+    Tässä taulukko työssä toteutetuista edgejen tallennustavoista. $n$ on merkkijonon pituus ja $m$ aakkoston koko. \\
+    (Vector on toteuttamani dynaaminen taulukko. "FastSet" taas on toteuttamani nopeampia lisäys- ja haku -operaatioita
+    tukeva tietorakenne)
     \\
     \begin{tabular}{c|c|c|c|c} \hline
-                            & \textbf{Vector}& \textbf{Vector järjest.} & \textbf{Taulukko} & \textbf{FastSet} \\ \hline
-        Edgen haku          & $O(m)$         & $O(\log m)$              & $O(1)$            & $O(\log^2 m)$     \\ \hline
-        Edgen lisäys        & $O(m)$         & $O(m)$                   & $O(1)$            & $O(\log m)$       \\ \hline
-        Noden lisäys        & $O(1)$         & $O(1)$                   & $O(m)$            & $O(1)$           \\ \hline
-        Kok. aikavaatimus   & $O(n*m)$       & $O(n*m)$                 & $O(n*m)$          & $O(n \log^2 m)$   \\ \hline
-        Muistinkäyttö       & $O(n)$         & $O(n)$                   & $O(n*m)$          & $O(n)$           \\
+                            & \textbf{Vector}& \textbf{Vector järjest.} & \textbf{Taulukko} & \textbf{FastSet}          \\ \hline
+        Edgen haku          & $O(m)$         & $O(\log m)$              & $O(1)$            & $O(\log^2 m)$             \\ \hline
+        Edgen lisäys        & $O(1), O(m)*$  & $O(m)$                   & $O(1)$            & $O(\log m), O(\log^2 m)*$ \\ \hline
+        Noden lisäys        & $O(1)$         & $O(1)$                   & $O(m)$            & $O(1)$                    \\ \hline
+        Kok. aikavaatimus   & $O(n*m)$       & $O(n*m)$                 & $O(n*m)$          & $O(n \log^2 m)$           \\ \hline
+        Kok. tilavaatimus   & $O(n)$         & $O(n)$                   & $O(n*m)$          & $O(n)$                    \\
     \end{tabular}
-    (Vector on toteuttamani dynaamisen kokoinen taulukko. "FastSet" taas on toteuttamani nopeampia lisäys- ja haku -operaatioita
-    tukeva tietorakenne)
+    * Edgen lisäykset Vectoriin ja FastSettiin olisivat teoriassa $O(1)$ ja $(O\log m)$, mutta koska edgen lisäyksen
+    yhteydessä tarkistetaan, onko kyseisellä merkillä alkavaa edgeä jo rakenteessa, aikavaatimukseksi tulee sama 
+    kuin edgen haussa. \\
     
     \subsection{Implementaatio-rakenteesta...}
         Ensimmäisenä toteutettu taulukko-implementaatio eroaa muista siinä, että sen UkkonenTree on template-luokka. (muissa
@@ -67,9 +70,10 @@
   \newpage
   \section{"FastSetin" aikavaatimus}
 
-    "FastSet" on tietorakenne, jossa säilytetään elementtejä järjestetyissä vektoreissa, joiden koot ovat 2:n potensseja.  
-    (en tiedä, mikä on tämän tietorakenteen oikea nimi, jos sillä on sellainen). Käytän tästä vektorijoukosta tässä 
-    analyysissä nimitystä vektorisetti. Vektorisetin koolla tarkoitan vektorisetin suurimman vektorin järjestyslukua.
+    "FastSet" on tietorakenne, jossa säilytetään elementtejä järjestetyissä dynaamisissa taulukoissa (käytän niistä
+    nimitystä vektori), joiden koot ovat 2:n potensseja. (en tiedä, mikä on tämän tietorakenteen oikea nimi, jos sillä 
+    on sellainen. Opin sen eräältä kaveriltani erään algoritmileirin yhteydessä). Käytän tästä tietorakenteen vektorijoukosta
+    tässä analyysissä nimitystä vektorisetti. Vektorisetin koolla tarkoitan vektorisetin suurimman vektorin järjestyslukua.
     (Järjestysluvultaan $n$:nnen vektorin koon ollessa $2^{n-1}$) Esimerkiksi 10 elementtiä sisältävässä vektorisetissä olisi 
     kaksi täytettyä vektoria, joiden koot ovat 2 ja 8, ja vektorisetin koko olisi tällöin 4. (väliin jäävät puuttuvat vektorit 
     voidaan ajatella tyhjiksi, jolloin vektorisetissä olisivat vektorit $1_{tyhja}$, $2_{taysi}$, $3_{tyhja}$ ja $4_{taysi}$.)
@@ -79,8 +83,8 @@
     \\ \\
     Hakeminen tietorakenteesta tapahtuu binäärihakemalla jokaisesta vektorista. Elementtien määrän ollessa $n$ vektoreita on 
     enintään $\log_2n$, jolloin binäärihakujen aikavaatimukseksi tulee yhteensä enintään $\sum_{i=0}^{\lfloor \log_2n \rfloor}
-    {\log_2{2^i}}\leq \log_2^2 n$. Keskimäärinkin binäärihakuja tarvitsee tehdä n. puolet tästä, joten hakemisen keskiarvoiseksi
-    aikavaatimukseksi tulee $O(\log_2^2 n)$.
+    {\log_2{2^i}}\leq \log_2^2 n$. Keskimäärinkin binäärihakuja tarvitsee tehdä n. puolet tästä, joten hakemisen keskimääräinen
+    aikavaatimus on $O(\log_2^2 n)$.
     \\ \\
     Elementin lisääminen toteutetaan käytännössä luomalla ensin vektorisetti, jossa on vain lisättävä elementti ja yhdistämällä 
     se alkuperäisen vektorisetin kanssa.
@@ -115,44 +119,46 @@
     \medskip \medskip
     \textbf{Todistus elementin lisäämisen keskimääräiselle aikavaatimukselle}
 
-    Olkoon jokainen elementti $i$ $n$-kokoisessa vektorisetissä vektorissa jonka koko on $2^k_i$. Tällöin elementti $i$ on ollut mukana
-    yhdistämisoperaatiossa $k_i$ kertaa. (Alussa $k_i=0$ ja jokaisessa yhdistämisessä se kasvaa yhdellä) Kokonaisaikavaatimus 
-    setin rakentamiseen on tällöin $\sum_{i=1}^n{k_i}$. Koska $k_i\leq \log_2n$, kokonaisaikavaatimus on enintään
-    $n\log_2n$, jolloin keskimääräinen aikavaatimus elementin lisäämiselle on $\log_2 n$.
+    Olkoon jokainen elementti $i$ $n$ elementtiä sisältävässä vektorisetissä vektorissa jonka koko on $2^{k_i}$. Tällöin
+    elementti $i$ on ollut mukana yhdistämisoperaatiossa $k_i$ kertaa. (Alussa $k_i=0$ ja jokaisessa yhdistämisessä 
+    se kasvaa yhdellä) Kokonaisaikavaatimus vektorisetin rakentamiseen on tällöin $\sum_{i=1}^n{k_i}$. Koska $k_i\leq \log_2n$,
+    kokonaisaikavaatimus on enintään $n\log_2n$, jolloin keskimääräinen aikavaatimus elementin lisäämiselle on $\log_2 n$.
 
   \newpage
-  \section{Longest common substring}
+  \section{Longest Common Substring}
     Longest Common Substring on ongelma, jossa halutaan selvittää joukolle merkkijonoja, mikä on pisin kaikille merkkijonoille
     yhteinen substring.
     
     Longest Common Substring-ongelman voi ratkaista suffiksipuulla $O(N*K)$ -ajassa, missä $N$ on merkkijonojen yhteispituus ja
-    $K$ merkkijonojen määrä. Toteutin tällaisen LCS-algoritmin.
+    $K$ merkkijonojen määrä. Toteutin osana projektia tällaisen LCS-algoritmin.
     
-    Ideana on muodostaa suffiksipuu merkkijonoista muodostetulla merkkijonolle, jossa jokaista merkkijonoa seuraa oma päätteensä.
+    Ideana on muodostaa merkkijonoista \textit{generalized suffix tree}, eli muodostaa yksi merkkijono, jossa merkkijonot ovat
+    peräkkäin ja jokaiselle on lisätty loppuun oma erityismerkkinsä ja luoda sille suffiksipuu.
     Esimerkiksi merkkijonoista $abbabb$, $ccbbabcc$ ja $ababc$ voitaisiin muodostaa merkkijono $abbabb\$_0ccbbabcc\$_1ababc\$_2$
-    ja sille suffiksipuu. ($\$_0$, $\$_1$ ja $\$_2$ ovat jokainen oma erityismerkkinsä)
+    ja sitten luoda sille suffiksipuu. ($\$_0$, $\$_1$ ja $\$_2$ ovat uniikkeja erityismerkkejä)
     
     Tässä suffiksipuussa jokainen $\$_i$ on varmasti lehteen vievällä edgellä, koska haarautuminen edellyttäisi sitä, että
     haarautumiskohtaa vastaava merkkijono esiintyy substringinä vähintään kaksi kertaa alkuperäisessä merkkijonossa. Haarautuminen
-    $\$_i$:n jälkeen tarkoittaisi siis sitä, että olisi ainakin kaksi samanlaista substringiä, joissa merkki $\$_i$ olisi mukana,
-    mikä on mahdotonta $\$_i$:n ollessa uniikki. Koska merkkijonon viimeinenkin merkki on erityismerkki, jokaisella lehteen vievällä
-    edgellä on ainakin yksi erityismerkki.
+    $\$_i$:n jälkeen ($\$_i$:n alipuussa) tarkoittaisi siis sitä, että olisi ainakin kaksi samanlaista substringiä, joissa merkki 
+    $\$_i$ olisi mukana. Tämä on mahdotonta, koska jokainen $\$_i$ on uniikki ja esiintyy merkkijonossa vain kerran. Koska 
+    merkkijonon viimeinen merkki on erityismerkki, jokaisella lehteen vievällä edgellä on ainakin yksi erityismerkki.
     
     Jokaista nodea, joka ei ole lehti, vastaa siis substring, jossa ei ole mukana erityismerkkejä. Pisimmän yhteisen substringin
-    on oltava jokin näistä nodeja vastaavista substringeistä. (Edgen keskelle päättyvää substringiä voi aina pidentää seuraavaan nodeen,
-    koska edgen keskellä olevaa ja seuraavaa nodea vastaavilla substringeillä on samat esiintymät alkuperäisessä merkkijonossa, ja
-    lehdistä ei voi tulla ratkaisuja.)
+    on oltava jokin näistä nodeja vastaavista substringeistä. (Edgen keskellä olevaa tilaa vastaavaa substringiä voi aina pidentää 
+    seuraavaan nodeen, koska edgen keskellä olevaa tilaa ja seuraavaa nodea vastaavilla substringeillä on samat esiintymät 
+    alkuperäisessä merkkijonossa. Lisäksi lehdistä ei voi tulla ratkaisuja.)
     
     Nodea vastaava substring on erityismerkkiin $\$_i$ päättyvän merkkijonon substring jos ja vain jos noden alipuussa on lehti, jossa
     $\$_i$ on ensimmäinen erityismerkki.
     
-    LCS on siis sellainen node, jonka alipuusssa on jokaiselle $\$_i$:lle lehti, jossa $\$_i$ on ensimmäinen erityismerkki, ja jota
-    vastaava merkkijono on mahdollisimman pitkä.
+    LCS:ää vastaava tila puussa on siis sellaisen noden kohdalla, jonka alipuusssa on jokaiselle $\$_i$:lle lehti, jossa $\$_i$ 
+    on ensimmäinen erityismerkki, ja jota vastaava merkkijono on mahdollisimman pitkä.
     
-    Tällaisen noden etsiminen on helppo toteuttaa $O(N*K)$ -ajassa. Ratkaisussa rekursoin puun läpi ($(O(N))$ nodea) ja katson 
+    Tällaisen noden etsiminen on helppo toteuttaa $O(N*K)$ -ajassa. Ratkaisussa rekursoin puun läpi ($O(N)$ nodea) ja katson 
     jokaisen noden kohdalla $K$-kokoisesta bitsetistä, millä $\$_i$:llä alkavia lehtiä sen noden alipuussa ovat. Tämän jälkeen
-    on vain valittava kaikkille merkkijonoille yhteisistä substringistä pisin/pisimmät, minkä toteutin vain käymällä taulukon
-    läpi.
+    on vain valittava kaikkille merkkijonoille yhteisistä substringeistä pisin/pisimmät, mikä on helppo toteuttaa esim. käymällä
+    kaikki yhteisiä substringejä vastaavat nodet läpi.
+    
     \newpage
     
     Pseudokoodi rekursiiviselle funktiolle findCommonStrings:
@@ -174,9 +180,9 @@
     \end{algorithm}
 
     \medskip \medskip
-    Rekursiivinen funktio laittaa listaan commonStrings kaikki nodet, joita vastaava merkkijono on yhteinen kaikille merkkijonoille.
+    Rekursiivinen funktio lisää siis listaan commonStrings kaikki nodet, joita vastaava merkkijono on yhteinen kaikille merkkijonoille.
     
-    Koko puun käsittelyn aikavaatimus on selvästi $O(N*K)$. Lopullisen vastauksen saa commonStrings-taulukosta $O(N)$ -ajassa.
+    Koko puun käsittelyn aikavaatimus on selvästi $O(N*K)$.
     
     
     

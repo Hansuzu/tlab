@@ -44,12 +44,12 @@
 
         Taulukko aikavaatimuksista. \\ \\
         \begin{tabular}{c|c|c|c|c|c} \hline
-                            &\textbf{Vect.}&\textbf{Vect.järj.}&\textbf{Taulukko}&\textbf{FastSet}&\textbf{stdset}\\ \hline
-            Edgen haku      &$O(m)$        &$O(\log m)$        &$O(1)$           &$O(\log^2 m)$    &$O(\log m)$     \\ \hline
-            Edgen lisäys    &$O(m)$        &$O(m)$             &$O(1)$           &$O(\log m)$      &$O(\log m)$     \\ \hline
-            Noden lisäys    &$O(1)$        &$O(1)$             &$O(m)$           &$O(1)$          &$O(1)$         \\ \hline
-            Kok.aikavaatimus&$O(n*m)$      &$O(n*m)$           &$O(n*m)$         &$O(n \log^2 m)$  &$O(n \log m)$   \\ \hline
-            Muistinkäyttö   &$O(n)$        &$O(n)$             &$O(n*m)$         &$O(n)$          &$O(n)$         \\
+                            &\textbf{Vect.}&\textbf{Vect.järj.}&\textbf{Taulukko}&\textbf{FastSet}        &\textbf{stdset}\\ \hline
+            Edgen haku      &$O(m)$        &$O(\log m)$        &$O(1)$           &$O(\log^2 m)$           &$O(\log m)$     \\ \hline
+            Edgen lisäys    &$O(1), O(m)*$ &$O(m)$             &$O(1)$           &$O(\log m), O(\log^ m)*$&$O(\log m)$     \\ \hline
+            Noden lisäys    &$O(1)$        &$O(1)$             &$O(m)$           &$O(1)$                  &$O(1)$         \\ \hline
+            Kok.aikavaatimus&$O(n*m)$      &$O(n*m)$           &$O(n*m)$         &$O(n \log^2 m)$         &$O(n \log m)$   \\ \hline
+            Kok.tilavaatimus&$O(n)$        &$O(n)$             &$O(n*m)$         &$O(n)$                  &$O(n)$         \\
         \end{tabular} \\ \\
 
         \newpage
@@ -59,7 +59,7 @@
             Kuvaan on otettu eri pituisilta satunnaisilta syötteiltä viiden kerran keskiarvo. Testit on suoritettu satunnaisessa
             järjestyksessä, jolloin mahdollinen koneen suoritusnopeuden vaihtelun vaikutus tasoittuu.
             \\ \\
-            \makebox[\textwidth]{\includegraphics[width={\textwidth}]{alphabet.png}} \\ \\
+            \makebox[\textwidth]{\includegraphics[width={\textwidth}]{stringlength.png}} \\ \\
             Punainen viiva: Vector  \\
             Sininen viiva: FastSet  \\
             Syaani viiva: Vector järjestystä ylläpitäen \\ 
@@ -67,6 +67,9 @@
             Vihreä viiva: std::set \\
             Violetti viiva (Taulukko-implementaatio) muuttaa suuntansa jyrkästi ylöspäin noin kohdassa 4000000, koska tietokoneen
             RAM-muisti loppuu sen jälkeen kesken.
+            \\ \\
+            Std::set ei välttämättä ole täysin vertailukelpoinen, koska edgen hakujen määrää ei ole optimoitu samalla tavalla kuin
+            Vector- ja FastSet-toteutuksiossa.
             
         \newpage
         \subsection{Aakkoston koko}
