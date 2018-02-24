@@ -121,13 +121,14 @@
     \medskip \medskip
     \textbf{Todistus elementin lisäämisen keskimääräiselle aikavaatimukselle}
     Pseudokoodissa esitetty swap-operaation oletetaan toimivan $O(1)$ -ajassa. Näin ollen algoritmin aikavaatimukseksi tulee
-    $O(\log n + M)$, missä $M$ on yhdistämisoperaatioiden kokonaisaikavaatimus.
+    $O(\log_2 n + M)$, missä $M$ on yhdistämisoperaatioiden aikavaatimus.
     \\ \\
     Olkoon jokainen elementti $i$ $n$ elementtiä sisältävässä vektorisetissä vektorissa jonka koko on $2^{k_i}$. Tällöin
     elementti $i$ on ollut mukana yhdistämisoperaatiossa $k_i$ kertaa. (Alussa $k_i=0$ ja jokaisessa yhdistämisessä 
     se kasvaa yhdellä) Kokonaisaikavaatimus vektorisetin rakentamisen yhdistämisoperaatioihin on tällöin $\sum_{i=1}^n{k_i}$. 
-    Koska $k_i\leq \log_2n$, kokonaisaikavaatimus on enintään $n\log_2n$, jolloin keskimääräinen aikavaatimus elementin 
-    lisäämiselle on $O(\log_2 n)$.
+    Koska $k_i\leq \log_2n$, kokonaisaikavaatimus on enintään $n\log_2n$. Toisaalta yli puolet elementeistä on ollut yhdistämisessä
+    mukana maksimimäärän $\lfloor \log_2n \rfloor$, joten kokonaisaikavaatimus on $O(n\log_2n)$ ja keskimääräinen aikavaatimus elementin lisäämiselle 
+    on $O(\log_2 n)$.
 
   \newpage
   \section{Longest Common Substring}
