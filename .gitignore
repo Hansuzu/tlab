@@ -2,7 +2,9 @@
 !*.*
 !*/
 !makefile
+build/*
 *.log
 *.aux
 *.toc
 test/coverage_files/*
+test/coverage_files/tmp/*
