@@ -10,9 +10,9 @@ g++ test/tmp/vector_test_runner.cpp -o test/bin/test_vector -Iinclude -O3 -std=c
 RET=$?;
 if [ $RET == 0 ] 
 then 
-    mv *.gcno test/coverage_files/
     echo "running test/bin/test_vector" 
     test/bin/test_vector
+    mv *.gcno test/coverage_files/
     mv *.gcda test/coverage_files/
     gcov test/coverage_files/vector_test_runner > test/coverage_files/vector_gcov_output.txt
     mv *.gcov test/coverage_files/

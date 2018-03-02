@@ -9,9 +9,9 @@ g++ test/tmp/bitset_test_runner.cpp -o test/bin/test_bitset -Iinclude -O3 -std=c
 RET=$?;
 if [ $RET == 0 ] 
 then 
-    mv *.gcno test/coverage_files/
     echo "running test/bin/test_bitset" 
     test/bin/test_bitset
+    mv *.gcno test/coverage_files/
     mv *.gcda test/coverage_files/
     gcov test/coverage_files/bitset_test_runner > test/coverage_files/bitset_gcov_output.txt
     mv *.gcov test/coverage_files/

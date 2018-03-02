@@ -9,9 +9,9 @@ g++ test/tmp/usuffix_test_runner.cpp src/usuffixnode_vector.cpp -o test/bin/test
 RET=$?;
 if [ $RET == 0 ] 
 then 
-    mv *.gcno test/coverage_files/
     echo "running test/bin/usuffix_test"
     test/bin/test_usuffix
+    mv *.gcno test/coverage_files/
     mv *.gcda test/coverage_files/
     gcov test/coverage_files/usuffix_test_runner > test/coverage_files/usuffix_gcov_output.txt
     gcov test/coverage_files/usuffixnode_vector > test/coverage_files/usuffix_vector_gcov_output.txt
