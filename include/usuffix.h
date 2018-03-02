@@ -117,6 +117,7 @@ public:
     
     bool isSubstring(Vector<int>& astr, int delta=0);
     bool isSubstring(std::string& astr, int delta=0);
+    bool isSubstring_(std::string astr, int delta=0){return isSubstring(astr, delta);}
     
     
     

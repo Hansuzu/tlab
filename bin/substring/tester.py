@@ -1,5 +1,6 @@
 import os
-TESTS=["suffixalgo", "suffixalgo_stdset", "suffixalgo_fastset"]
+TESTS=["suffixalgo", "suffixalgo_ordered_vector", "suffixalgo_stdset", "suffixalgo_fastset"]
+
 
 def gf(fn):
     f=open(fn)

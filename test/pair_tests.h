@@ -11,5 +11,11 @@ public:
         t.second=6;
         TS_ASSERT_EQUALS(t.first, 3);
         TS_ASSERT_EQUALS(t.second, 6);
+        Pair<int, int>* t2=new Pair<int, int>();
+        t2->first=3;
+        t2->second=6;
+        TS_ASSERT_EQUALS(t2->first, 3);
+        TS_ASSERT_EQUALS(t2->second, 6);
+        delete t2;
     }
 };

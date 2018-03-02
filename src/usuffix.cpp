@@ -189,11 +189,9 @@ UkkonenTree::Reference UkkonenTree::getChild(Reference ref, int c){
         int i=ref.getS()->findEdge(ref.getS()->findChildIndex(str[ref.getL()])).l + (ref.getR()-ref.getL());//i=index corresponding to ref.r in edges l-r range 
         if (i+1>=(int)str.size() || str[i+1]!=c){ 
             ref.setS(NULL);
-            return ref;
         }else{
             ref.setR(ref.getR()+1);
             canonize(ref);
-            return ref;
         }
     }else{
         int id=ref.getS()->findChildIndex(c);
@@ -201,12 +199,11 @@ UkkonenTree::Reference UkkonenTree::getChild(Reference ref, int c){
             int b=ref.getS()->findEdge(id).l;
             ref.setL(b); ref.setR(b);
             canonize(ref);
-            return ref;
         }else{
             ref.setS(NULL);
-            return ref;
         }
     }
+    return ref;
 }
 
 

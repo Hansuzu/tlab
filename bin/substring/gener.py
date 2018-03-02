@@ -3,9 +3,9 @@ import random
 m="qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"
 m="qwertyuiopasdfghjklzxcvbnm"
 
-SZ=100
-T=100000
-MXT=10
+SZ=random.randint(1, 100)
+T=1000000
+MXT=50
 
 
 MXT=min(MXT, SZ)

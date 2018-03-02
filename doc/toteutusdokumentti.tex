@@ -74,9 +74,10 @@
     nimitystä vektori), joiden koot ovat 2:n potensseja. (en tiedä, mikä on tämän tietorakenteen oikea nimi, jos sillä 
     on sellainen. Opin sen eräältä kaveriltani erään algoritmileirin yhteydessä). Käytän tästä tietorakenteen vektorijoukosta
     tässä analyysissä nimitystä vektorisetti. Vektorisetin koolla tarkoitan vektorisetin suurimman vektorin järjestyslukua.
-    (Järjestysluvultaan $n$:nnen vektorin koon ollessa $2^{n-1}$) Esimerkiksi 10 elementtiä sisältävässä vektorisetissä olisi 
-    kaksi täytettyä vektoria, joiden koot ovat 2 ja 8, ja vektorisetin koko olisi tällöin 4. (väliin jäävät puuttuvat vektorit 
-    voidaan ajatella tyhjiksi, jolloin vektorisetissä olisivat vektorit $1_{tyhja}$, $2_{taysi}$, $3_{tyhja}$ ja $4_{taysi}$.)
+    (Järjestysluvultaan $k$:nnen vektorin koon ollessa $2^{k-1}$). $n$ elementtiä sisältävän vektorisetin koko on siis
+    $\lfloor \log_2 n \rfloor$. Esimerkiksi 10 elementtiä sisältävässä vektorisetissä olisi kaksi täytettyä vektoria, joiden 
+    koot ovat 2 ja 8, ja vektorisetin koko olisi tällöin 4. (väliin jäävät puuttuvat vektorit voidaan ajatella tyhjiksi, 
+    jolloin vektorisetissä olisivat vektorit $1_{tyhja}$, $2_{taysi}$, $3_{tyhja}$ ja $4_{taysi}$.)
     
     Pseudokoodissa merkinnällä $A[i]$ tarkoitetaan vektorisetin $A$ vektoria, jonka koko on $2^i$. Tämä vektori saattaa
     olla tyhjä tai täysi.
@@ -89,7 +90,7 @@
     Elementin lisääminen toteutetaan käytännössä luomalla ensin vektorisetti, jossa on vain lisättävä elementti ja yhdistämällä 
     se alkuperäisen vektorisetin kanssa.
     
-    Kaksi vektorisettiä voi yhdistää käymällä läpi molempien vektorit pienimmästä lähtien ja yhdistämällä samankokoiset vektorit 
+    Kaksi vektorisettiä yhdistetään käymällä läpi molempien vektorit pienimmästä lähtien ja yhdistämällä samankokoiset vektorit 
     (jos molemmissa sen kokoinen vektori on täysi). Samalla tyhjennetään yhdistettävän vektorisetin vektorit. Aikavaatimus kahden 
     järjestetyn vektorin yhdistämiseen järjestetty vektori tuottaen on $O(k)$, missä $k$ on uuden vektorin koko. Kokonaisaikavaatimus
     yhdistämisessä voi siis pahimmillaan olla $O(n)$, kun vektorisetissä on yhteensä n elementtiä. Keskimäärin operaatio on kuitenkin
@@ -121,7 +122,7 @@
     \medskip \medskip
     \textbf{Todistus elementin lisäämisen keskimääräiselle aikavaatimukselle}
     Pseudokoodissa esitetty swap-operaation oletetaan toimivan $O(1)$ -ajassa. Näin ollen algoritmin aikavaatimukseksi tulee
-    $O(\log_2 n + M)$, missä $M$ on yhdistämisoperaatioiden aikavaatimus.
+    $O(\log_2 n + M)$, missä $M$ on suoritettujen yhdistämisoperaatioiden aikavaatimus.
     \\ \\
     Olkoon jokainen elementti $i$ $n$ elementtiä sisältävässä vektorisetissä vektorissa jonka koko on $2^{k_i}$. Tällöin
     elementti $i$ on ollut mukana yhdistämisoperaatiossa $k_i$ kertaa. (Alussa $k_i=0$ ja jokaisessa yhdistämisessä 
