@@ -37,27 +37,29 @@
 
     Tässä taulukko työssä toteutetuista edgejen tallennustavoista. $n$ on merkkijonon pituus ja $m$ aakkoston koko. \\
     (Vector on toteuttamani dynaaminen taulukko. "FastSet" taas on toteuttamani nopeampia lisäys- ja haku -operaatioita
-    tukeva tietorakenne)
+    tukeva tietorakenne.) Näiden lisäksi testauksessa oli vertailua varten std::set:tiä käyttävä implementaatio, jonka
+    aikavaatimus $O(n \log m)$).
     \\
     \begin{tabular}{c|c|c|c|c} \hline
-                            & \textbf{Vector}& \textbf{Vector järjest.} & \textbf{Taulukko} & \textbf{FastSet}          \\ \hline
-        Edgen haku          & $O(m)$         & $O(\log m)$              & $O(1)$            & $O(\log^2 m)$             \\ \hline
-        Edgen lisäys        & $O(1), O(m)*$  & $O(m)$                   & $O(1)$            & $O(\log m), O(\log^2 m)*$ \\ \hline
-        Noden lisäys        & $O(1)$         & $O(1)$                   & $O(m)$            & $O(1)$                    \\ \hline
-        Kok. aikavaatimus   & $O(n*m)$       & $O(n*m)$                 & $O(n*m)$          & $O(n \log^2 m)$           \\ \hline
-        Kok. tilavaatimus   & $O(n)$         & $O(n)$                   & $O(n*m)$          & $O(n)$                    \\
+                            & \textbf{Taulukko} & \textbf{Vector}& \textbf{Vector järjest.} & \textbf{"FastSet"}        \\ \hline
+        Edgen haku          & $O(1)$            & $O(m)$         & $O(\log m)$              & $O(\log^2 m)$             \\ \hline
+        Edgen lisäys        & $O(1)$            & $O(1), O(m)*$  & $O(m)$                   & $O(\log m), O(\log^2 m)*$ \\ \hline
+        Noden lisäys        & $O(m)$            & $O(1)$         & $O(1)$                   & $O(1)$                    \\ \hline
+        Kok. aikavaatimus   & $O(n*m)$          & $O(n*m)$       & $O(n*m)$                 & $O(n \log^2 m)$           \\ \hline
+        Kok. tilavaatimus   & $O(n*m)$          & $O(n)$         & $O(n)$                   & $O(n)$                    \\
     \end{tabular}
-    * Edgen lisäykset Vectoriin ja FastSettiin olisivat teoriassa $O(1)$ ja $(O\log m)$, mutta koska edgen lisäyksen
+    * Edgen lisäykset Vectoriin ja FastSettiin olisivat teoriassa $O(1)$ ja $O(\log m)$, mutta koska edgen lisäyksen
     yhteydessä tarkistetaan, onko kyseisellä merkillä alkavaa edgeä jo rakenteessa, aikavaatimukseksi tulee sama 
     kuin edgen haussa. \\
     
-    \subsection{Implementaatio-rakenteesta...}
-        Ensimmäisenä toteutettu taulukko-implementaatio eroaa muista siinä, että sen UkkonenTree on template-luokka. (muissa
-        implementaatioissa on taas siitä kopioitu suurin osa puun perusrakenteesta) Kaikki muut versiot implementoivat
-        usuffix.h -headerissa määritellyn UkkonenTree -luokan kukin omalla tavallaan, mikä mahdollistaa mm. eri luokkien 
-        testausohjelmien compilaamisen samasta lähdekoodista.
+    \subsection{Implementaatiosta ja tiedostoista ja rakenteesta...}
+        Ensimmäisenä toteutettu taulukko-implementaatio eroaa muista siinä, että sen UkkonenTree on template-luokka (aakkoston
+        koko on luokkaan sidottu)
+
+        Kaikki muut versiot implementoivat usuffix.h -headerissa määritellyn UkkonenTree -luokan kukin omalla tavallaan, mikä
+        mahdollistaa mm. eri luokkien testausohjelmien compilaamisen samasta lähdekoodista.
         
-        Käytännössä usuffix.h:n toteuttavat implementaatiot kuitenkin käyttävät samaa koodia kaikkialla muualla paitsi
+        Käytännössä usuffix.h:n toteuttavat implementaatiot käyttävät samaa koodia kaikkialla muualla paitsi
         struct Noden implementaatiossa. Koodin kopioimisen välttämiseksi laitoin yhteisen lähdekoodin tiedostoon (usuffix.cpp).
         Toteutus on hieman epäelegantti. Jokaiselle eri implementaatiolla on oma usuffixnode*.cpp -tiedoston, josta 
         includataan usuffix.cpp. Tämä ratkaisu kuitenkin todennäköisesti paras. Toinen vaihtoehto olisi tietysti ollut
@@ -191,6 +193,9 @@
     
     Koko puun käsittelyn aikavaatimus on selvästi $O(N*K)$.
     
+    Projektin LCS-implementaatiossa käytin suffiksipuu-algoritmeista sitä, missä edget tallennetaan Vectoriin. (Se on käytännössä paras,
+    kun aakkoston koko on enintään muutama sata merkkiä)
     
     
 \end{document}
+\grid

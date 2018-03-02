@@ -26,7 +26,7 @@ UFILESP_OV=$(UFILES_OV) $(BUILDDIR)/usuffix_ordered_vector.o
 
 
 all:    $(TARGETDIR)/substring/suffixalgo $(TARGETDIR)/substring/suffixalgo_fastset $(TARGETDIR)/substring/suffixalgo_stdset $(TARGETDIR)/substring/suffixalgo_ordered_vector $(TARGETDIR)/substring/brute \
-	$(TARGETDIR)/LCS/lcs \
+	$(TARGETDIR)/LCS/lcs $(TARGETDIR)/LCS/brute \
 	$(TARGETDIR)/visualizer/visualize \
 	$(TARGETDIR)/speedtest/speedtest $(TARGETDIR)/speedtest/speedtest_fastset $(TARGETDIR)/speedtest/speedtest_stdset $(TARGETDIR)/speedtest/speedtest_ordered_vector $(TARGETDIR)/speedtest/speedtest_array $(TARGETDIR)/speedtest/gener \
 	$(BUILDDIR)/usuffix.o $(BUILDDIR)/usuffix_fastset.o $(BUILDDIR)/usuffix_stdset.o $(BUILDDIR)/usuffix_ordered_vector.o
@@ -61,6 +61,9 @@ $(TARGETDIR)/visualizer/visualize: $(SRCDIR)/visualizer/visualize.cpp $(UFILESP)
 
 $(TARGETDIR)/LCS/lcs: $(SRCDIR)/LCS/lcs.cpp $(UFILESP)
 	$(CC) $(CFLAGS)  $(SRCDIR)/LCS/lcs.cpp  $(BUILDDIR)/usuffix.o -o $(TARGETDIR)/LCS/lcs
+
+$(TARGETDIR)/LCS/brute: $(SRCDIR)/LCS/brute.cpp
+	$(CC) $(CFLAGS)  $(SRCDIR)/LCS/brute.cpp -o $(TARGETDIR)/LCS/brute
 
 
 

@@ -17,7 +17,7 @@
     \section{Toteutetut tietorakenteet ja niiden toimivuuden testaus}
         Projektissa toteutettiin seuraavat tietorakenneluokat \\
         Vector - Dynaaminen taulukko, johon lisäykset keskimäärin $O(1)$\\
-        FastSet - Tietorakenne, josta hakeminen $O(\log^2 n)$ ja lisäys $O(\log n)$\\
+        FastSet - Tietorakenne, josta hakeminen $O(\log^2 n)$ ja lisäys keskimäärin $O(\log n)$\\
         Bitset \\
         UkkonenTree - Edget Vectorissa \\
         UkkonenTree - Edget Vectorissa järjestystä ylläpitäen \\
@@ -26,22 +26,25 @@
         UkkonenTree - Edget std::setissä (vertailua varten) 
 
         Luokkia on yksikkötestattu. Lisäksi Ukkosen algoritmin toimivuutta on tutkittu satunnaisilla syötteillä
-        substring-kyselyillä.
+        substring-kyselyillä. (Jos Ukkosen algoritmin muodostamassa suffiksipuussa on virhe, on hyvin todennäköisesti
+        olemassa substring-kysely, joka tuottaa väärän vastauksen)
 
-        Yksikkötestit ovat test/ -kansiossa.
+        \textbf{Yksikkötestit} ovat test/ -kansiossa. Coverage-raportit eri tiedostoista ovat kansiossa test/coverage\_files.
 
-        Satunnaistestaus on kansiossa bin/substring. Python2-skripti tester.py ajaa satunnaistestejä silmukassa. 
+        \textbf{Satunnaistesteri} on kansiossa bin/substring. Python2-skripti tester.py ajaa satunnaistestejä silmukassa. 
         Skriptiä gener.py käytetään testien generoimiseen.
 
         Satunnaistestit generoidaan generoimalla ensin satunnainen merkkijono. Sen jälkeen generoidaan joukko toisia 
-        merkkijonoja valitsemalla alkuperäisestä merkkijonosta satunnainen substring ja vaihtamalla siitä 0-3 merkkiä. 
-        Tämän jälkeen testataan jokaisella ohjelmalla, vastaako se oikein kyselyyn, mitkä merkkijonot ovat alkuperäisen
-        merkkijonon substringejä. Vastaus vahvistetaan vertailemalla tulostetta std::substring -funktiota käyttävän 
-        ohjelman tulosteeseen.
+        merkkijonoja joko satunnaisesti taivalitsemalla alkuperäisestä merkkijonosta satunnainen substring ja käyttämällä
+        sitä sellaisenaan tai tekemällä siihen joitain pieniä muutoksia. Tämän jälkeen testataan jokaisella ohjelmalla,
+        vastaako se oikein kyselyyn, mitkä merkkijonot ovat alkuperäisen merkkijonon substringejä. Vastaus vahvistetaan 
+        vertailemalla tulostetta std::substring -funktiota käyttävän ohjelman (\textit{brute}) tulosteeseen.
+
+        Satunnaistestausta on tehty erilaisille generointiasetuksilla. Yhteensä substring-kyselyitä on tehty ja tarkastettu
+        satoja miljoonia.
 
     \section{Nopeuden testaaminen}
 
-        Vertasin eri toteutuksia toisiinsa mittaamalla time-komennolla aikaa satunnaisesti generoidun merkkijonon suffiksipuun muodostamiseen. Kansiossa bin/speedtest on python-skriptit, jolla mittasin suoritusajat.
 
         Taulukko aikavaatimuksista. \\ \\
         \begin{tabular}{c|c|c|c|c|c} \hline
@@ -52,6 +55,9 @@
             Kok.aikavaatimus&$O(n*m)$      &$O(n*m)$           &$O(n*m)$         &$O(n \log^2 m)$         &$O(n \log m)$   \\ \hline
             Kok.tilavaatimus&$O(n)$        &$O(n)$             &$O(n*m)$         &$O(n)$                  &$O(n)$         \\
         \end{tabular} \\ \\
+
+        Vertasin eri ohjelmien suoritusnopeuksia toisiinsa mittaamalla time-komennolla aikaa satunnaisesti generoidun 
+        merkkijonon suffiksipuun muodostamiseen. Kansiossa bin/speedtest on python-skriptit, jolla mittasin suoritusajat.
 
         \newpage
         \subsection{Syötteen pituus}
@@ -101,6 +107,6 @@
             
 
     \section{Longest Common Substring}
-        Longest Common Substring on ongelma, jossa halutaan selvittää joukolle merkkijonoja, mikä on pisin kaikille merkkijonoille
-        yhteinen substring. 
+        Longest Common Substring -algoritmin toimivuutta on yksikkötestien lisäksi testattu samankaltaisella brute-testaajalla kuin
+        substring-kyselyissä. Ohjelman toiminta on tarkastettu sadoilla tuhansilla satunnaistesteillä.
 \end{document}
