@@ -1,9 +1,9 @@
 ## Käyttöohje
 
 
-./test.sh kääntää yksikkötestit ja ajaa ne. (vaatii cxx test -asennuksen. esim. sudo apt install cxxtest)
+./test.sh kääntää yksikkötestit ja ajaa ne. (cxxtest)
 
-Muut toiminnot: make
+Muu compilaus: make
 
 
 ### Substring-brute:
@@ -22,4 +22,12 @@ Kansiossa bin/visualize on ohjelma, joka lukee merkkijonon ja piirtää siitä s
 tiedostoon tree.png
 
 ### Speedtest
-Kansiossa bin/speedtest on nopeuden testaamisen työkalut.
+Kansiossa bin/speedtest on nopeuden testaamisen työkalut. Python-scriptit ajavat testit. (kestää melko kauan)
+
+### LCS
+bin/LCS/lcs on LCS:n suffiksipuulla ratkaiseva ohjelma.
+Ohjelma lukee syötteenä merkkijonojen lukumäärän ja merkkijonot, 
+tulostaa pisimmän yhteisen merkkijonon pituuden ja erilaiset
+tämän pituiset merkkijonot.
+
+Samassa kansiossa on myös samantapainen brutetestaaja kuin substring-kansiossa.
