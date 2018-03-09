@@ -1,7 +1,7 @@
 ## Käyttöohje
 
 
-./test.sh kääntää yksikkötestit ja ajaa ne. (cxxtest)
+./test.sh kääntää yksikkötestit ja ajaa ne. (cxxtest) test/coverage_files -kansioon tulee coverage-raportit.
 
 Muu compilaus: make
 
@@ -22,7 +22,7 @@ Kansiossa bin/visualize on ohjelma, joka lukee merkkijonon ja piirtää siitä s
 tiedostoon tree.png
 
 ### Speedtest
-Kansiossa bin/speedtest on nopeuden testaamisen työkalut. Python-scriptit ajavat testit. (kestää melko kauan)
+Kansiossa bin/speedtest on nopeuden testaamisen työkalut. Python-scriptit ajavat testit. (Testien ajaminen kestää melko kauan)
 
 ### LCS
 bin/LCS/lcs on LCS:n suffiksipuulla ratkaiseva ohjelma.
